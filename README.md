@@ -1,3 +1,8 @@
+## Live versions
+
+https://wordle-legends.vercel.app --- main version
+https://wordle-test-branch.vercel.app --- test version
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
