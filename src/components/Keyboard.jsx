@@ -6,6 +6,22 @@ export default function Keyboard() {
   const [display2, setDisplay2] = useState("");
   const [display3, setDisplay3] = useState("");
 
+  const thirdRow = ["Z", "X", "C", "V", "B", "N", "M"];
+
+  //   function typeInLine(key) {
+  //     setDisplay1(key);
+  //   }
+
+  function typeInLine(key) {
+    if (display1 === "") {
+      setDisplay1(key);
+    } else if (display1 !== "" && display2 === "") {
+      setDisplay2(key);
+    } else if (display1 !== "" && display2 !== "" && display3 === "") {
+      setDisplay3(key);
+    }
+  }
+
   return (
     <div id="keyboard-container">
       <p className="display-box">Display1: {display1}</p>
@@ -73,6 +89,19 @@ export default function Keyboard() {
         >
           f
         </button>
+      </div>
+      <div className="keys-row">
+        {thirdRow.map((key, index) => (
+          <button
+            key={key}
+            value={key}
+            onClick={() => {
+              typeInLine(key);
+            }}
+          >
+            {key}
+          </button>
+        ))}
       </div>
     </div>
   );
