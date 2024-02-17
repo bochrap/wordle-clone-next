@@ -1,4 +1,5 @@
 import { sql } from "@vercel/postgres";
+import Link from "next/link";
 
 export default async function Home() {
   const test = await sql`
@@ -6,6 +7,7 @@ export default async function Home() {
 `;
   return (
     <>
+    <Link href="/play">Play</Link>
     <h1>Posts</h1>
       <ul>
         {test.rows.map((item) => (
