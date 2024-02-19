@@ -12,3 +12,7 @@
   border: 1px solid black;
   background-color: rgb(195, 195, 195);
 }
+
+#enter-button {
+  margin-left: 50px;
+}

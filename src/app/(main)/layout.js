@@ -1,6 +1,8 @@
 /* ----- Global Imports ----- */ 
 import { ClerkProvider, UserButton, auth, currentUser, clerkClient, getAuth } from "@clerk/nextjs";
 import Link from "next/link";
+import GameContextProvider from "@/context/game-context";
+import LoginManager from "@/components/loginmanage";
 
 import "./globals.css";
 
@@ -17,11 +19,13 @@ export default async function RootLayout({ children }) {
   return (
     <ClerkProvider>
     <html lang="en">
-      <body>
-        {userId && <UserButton afterSignOutUrl="/" userProfileMode="navigation" userProfileUrl="/user-profile" />}
-        {!userId && <Link href="/sign-in">Sign In</Link>}
-        {children}
-      </body>
+      <GameContextProvider>
+        <body>
+         <LoginManager/>
+  
+          {children}
+        </body>
+      </GameContextProvider>
     </html>
     </ClerkProvider>
   );
