@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useState, useContext } from "react";
+import checkDB from "@/lib/checkDB";
 
 const GameContext = createContext();
 
@@ -10,10 +11,12 @@ export default function GameContextProvider({ children }) {
   const [display4, setDisplay4] = useState("");
   const [display5, setDisplay5] = useState("");
 
-  function getGuess() {
+  async function getGuess() {
     if (display5 !== "") {
       const guess = display1 + display2 + display3 + display4 + display5;
-      console.log("important string!", guess);
+      //console.log("important string!", guess);
+      const isAllowedGuess = await checkDB(guess);
+      console.log(isAllowedGuess);
     } else {
       console.log("BAD BOY!");
     }
