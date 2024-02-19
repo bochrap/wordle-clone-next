@@ -11,7 +11,6 @@ export default function Keyboard() {
 
   return (
     <div id="keyboard-container">
-
       <div className="keys-row">
         {firstRow.map((key, index) => (
           <button
@@ -50,6 +49,7 @@ export default function Keyboard() {
             {key}
           </button>
         ))}
+        <button id="enter-button">ENTER</button>
       </div>
     </div>
   );
