@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useState, useContext } from "react";
-import checkDB from "@/lib/checkDB";
+import { checkDB, getTheWord } from "@/lib/checkDB";
 
 const GameContext = createContext();
 
@@ -18,6 +18,9 @@ export default function GameContextProvider({ children }) {
       const isAllowedGuess = await checkDB(guess);
       console.log(isAllowedGuess);
     } else {
+      const solution = await getTheWord();
+      console.log(solution);
+      // getTheWord();
       console.log("BAD BOY!");
     }
   }
