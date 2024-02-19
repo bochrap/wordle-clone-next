@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useState, useContext } from "react";
 import { checkDB, getTheWord } from "@/lib/checkDB";
+import { getUserId } from "@/lib/users";
 
 const GameContext = createContext();
 
@@ -18,12 +19,19 @@ export default function GameContextProvider({ children }) {
       const isAllowedGuess = await checkDB(guess);
       console.log(isAllowedGuess);
     } else {
-      const solution = await getTheWord();
-      console.log(solution);
       // getTheWord();
       console.log("BAD BOY!");
     }
   }
+
+  async function startNewGame () {
+
+    const user = await getUserId ();
+    const solution = await getTheWord ();
+    console.log(solution, user);
+
+// const newgame = await sql`INSERT INTO games (user_id, game_start_time, solution) VALUES {$userId}`;
+}
 
   function typeInLine(key) {
     if (display1 === "") {
@@ -39,7 +47,7 @@ export default function GameContextProvider({ children }) {
     }
   }
 
-  return <GameContext.Provider value={{ display1, display2, display3, display4, display5, getGuess, typeInLine }}>{children}</GameContext.Provider>;
+  return <GameContext.Provider value={{ display1, display2, display3, display4, display5, getGuess, typeInLine, startNewGame }}>{children}</GameContext.Provider>;
 }
 
 export function useGameContext() {
