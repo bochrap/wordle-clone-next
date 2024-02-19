@@ -9,8 +9,13 @@ export default function GameContextProvider({children}) {
     const [display3, setDisplay3] = useState("");
     const [display4, setDisplay4] = useState("");
     const [display5, setDisplay5] = useState("");
+  
+  function getGuess() {
+    const guess = display1 + display2 + display3 + display4 + display5;
+    console.log("important string!", guess);
+  }
 
-    function typeInLine(key) {
+  function typeInLine(key) {
         if (display1 === "") {
           setDisplay1(key);
         } else if (display1 !== "" && display2 === "") {
@@ -26,7 +31,7 @@ export default function GameContextProvider({children}) {
 
 
     return (
-        <GameContext.Provider value={{display1, display2, display3, display4, display5, typeInLine}}>
+        <GameContext.Provider value={{display1, display2, display3, display4, display5, getGuess, typeInLine}}>
             {children}
         </GameContext.Provider>
     );
