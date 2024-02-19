@@ -1,5 +1,9 @@
 # Game Logic
 
+## Blockers 
+
+Need users table for user_id & clerk_userid   
+
 ## Game table columns  
 
 CREATE TABLE games   
@@ -24,6 +28,7 @@ what row we are on state
 
 ### After each row  
 
+Have Enter Key and/or submit functionality to try submitting a guess  
 validate guess  [  2 steps ]   
 database check for valid guess  
 Then record guess in database  -- can be left till we implement game id storage  
