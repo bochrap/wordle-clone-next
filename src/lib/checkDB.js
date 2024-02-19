@@ -20,3 +20,7 @@ export async function getTheWord() {
   const wordString = fetchTheWord.rows[0].word;
   return wordString;
 }
+
+export async function createGame(solution, user) {
+  const newgame = await sql`INSERT INTO games (user_id, game_start_time, solution) VALUES (${user}, CURRENT_TIMESTAMP, ${solution})`;
+}
