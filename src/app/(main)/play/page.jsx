@@ -11,8 +11,8 @@ export default function PlayPage() {
     const {startNewGame} = useGameContext ();
     const smartUseEffect = useRef(false);
     useEffect(() => {
-      startNewGame();
       if (smartUseEffect.current) {
+        startNewGame();
         return
       }
       smartUseEffect.current = true;
