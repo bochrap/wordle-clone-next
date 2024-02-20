@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { checkDB, getTheWord, createGame, checkGame } from "@/lib/checkDB";
 import { getUserId } from "@/lib/users";
 
@@ -22,7 +22,7 @@ export default function GameContextProvider({ children }) {
     success: null,
     score: null,
   };
-
+  const [gamesolution, setGamesolution] = useState()
   let [currentGame, setCurrentGame] = useState(currentGameObject);
 
   const [display1, setDisplay1] = useState("");
@@ -32,10 +32,31 @@ export default function GameContextProvider({ children }) {
   const [display5, setDisplay5] = useState("");
 
   async function getGuess() {
+   
+    
+
     if (display5 !== "") {
       const guess = display1 + display2 + display3 + display4 + display5;
       //console.log("important string!", guess);
       const isAllowedGuess = await checkDB(guess);
+        if( isAllowedGuess.rowCount > 0 ) {
+          let solutionarray = gamesolution.split('');
+          
+          if(solutionarray[0] == display1.toLowerCase()) {
+            console.log('perfect')
+          }
+          else if(solutionarray[0] == display2.toLowerCase() || solutionarray[0] == display3.toLowerCase()|| solutionarray[0] == display4.toLowerCase()|| solutionarray[0] == display5.toLowerCase()){
+            console.log('good')
+          }
+          else {
+            console.log('back')
+          }
+
+          console.log("It is a valid word but might not be correct")
+        } else {
+          console.log("Not a valid word")
+        }
+
       console.log(isAllowedGuess);
     } else {
       // getTheWord();
@@ -61,6 +82,7 @@ export default function GameContextProvider({ children }) {
         (currentGame.game_start_time = gameValues.game_start_time),
         (currentGame.solution = gameValues.solution)
       );
+      setGamesolution(gameValues.solution);
       console.log(currentGame);
     }
   }
