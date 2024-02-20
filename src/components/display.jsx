@@ -10,6 +10,7 @@ export default function Display() {
     let { display4 } = useGameContext();
     let { display5 } = useGameContext();
 
+
     return(
         <div id="line">
         <p className="display-box">{display1}</p>

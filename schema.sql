@@ -12,3 +12,20 @@ INSERT INTO test (content) VALUES ('my other test');
 CREATE TABLE words ( id SERIAL PRIMARY KEY, word TEXT UNIQUE, isSolution BOOLEAN NOT NULL DEFAULT FALSE);
 
 CREATE TABLE users ( id SERIAL PRIMARY KEY, clerk_user_id VARCHAR(255) NOT NULL, username TEXT);
+
+CREATE TABLE games (
+id SERIAL PRIMARY KEY,
+user_id INTEGER NOT NULL REFERENCES users(id),
+game_start_time TIMESTAMP WITH TIME ZONE,
+game_end_time TIMESTAMP WITH TIME ZONE,
+solution TEXT NOT NULL,
+guess_one TEXT,
+guess_two TEXT,
+guess_three TEXT,
+guess_four TEXT,
+guess_five TEXT,
+guess_six TEXT,
+duration TEXT,
+success BOOLEAN,
+score INTEGER,
+isLiveGame BOOLEAN DEFAULT TRUE);

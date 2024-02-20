@@ -22,7 +22,6 @@ export default async function RootLayout({ children }) {
       <GameContextProvider>
         <body>
          <LoginManager/>
-  
           {children}
         </body>
       </GameContextProvider>
