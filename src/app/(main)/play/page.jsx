@@ -11,11 +11,11 @@ export default function PlayPage() {
     const {startNewGame} = useGameContext ();
     const smartUseEffect = useRef(false);
     useEffect(() => {
-      if (smartUseEffect.current) {
+      if (!smartUseEffect.current) {
+        console.log("i should only run one time");
         startNewGame();
-        return
       }
-      smartUseEffect.current = true;
+      return () => smartUseEffect.current = true;
     }, []);
   return (
     <div>
