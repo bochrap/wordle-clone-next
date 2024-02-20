@@ -26,16 +26,15 @@ export async function createGame(solution, user) {
 }
 
 export async function checkGame(userId) {
-  const game = await sql`SELECT * FROM games WHERE user_id=${userId}`;
+  const game = await sql`SELECT * FROM games WHERE user_id=${userId} AND isLiveGame='TRUE'`;
+
   console.log("game is ", game);
   if (game.rowCount === 0) {
     console.log("im zero rows ");
     return false;
   }
-  if (game.rows[0].game_end_time === null) {
+  else {
     return true
   }
-  else {
-    return false
-  }
+
 }

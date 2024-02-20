@@ -27,4 +27,5 @@ guess_five TEXT,
 guess_six TEXT,
 duration TEXT,
 success BOOLEAN,
-score INTEGER);
+score INTEGER,
+isLiveGame BOOLEAN DEFAULT TRUE);
