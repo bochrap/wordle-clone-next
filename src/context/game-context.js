@@ -23,7 +23,7 @@ export default function GameContextProvider({ children }) {
     score: null,
   };
 
-  const [currentGame, setCurrentGame] = useState(currentGameObject);
+  let [currentGame, setCurrentGame] = useState(currentGameObject);
 
   const [display1, setDisplay1] = useState("");
   const [display2, setDisplay2] = useState("");
@@ -55,8 +55,18 @@ export default function GameContextProvider({ children }) {
       if (isGame.rows[0]) {
         gameValues = isGame.rows[0];
       }
-      let loadCurrentGame = { ...currentGameObject };
-      console.log(loadCurrentGame);
+      // setCurrentGame = { ...currentGameObject };
+      // console.log(currentGame);
+      let copyCurrentGame = { ...currentGame };
+      console.log(copyCurrentGame);
+      copyCurrentGame.id = gameValues.id;
+      copyCurrentGame.user_id = gameValues.user_id;
+      copyCurrentGame.game_start_time = gameValues.game_start_time;
+      copyCurrentGame.solution = gameValues.solution;
+      console.log(copyCurrentGame);
+      currentGame = { ...copyCurrentGame };
+      setCurrentGame(...copyCurrentGame);
+      console.log(currentGame);
     }
   }
 
