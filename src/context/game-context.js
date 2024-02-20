@@ -21,11 +21,11 @@ export default function GameContextProvider({ children }) {
     duration: null,
     success: null,
     score: null,
-  }
+  };
 
   const [currentGame, setCurrentGame] = useState(currentGameObject);
 
-  const [gamesolution, setGamesolution] = useState()
+  const [gamesolution, setGamesolution] = useState();
 
   const [display1, setDisplay1] = useState("");
   const [display2, setDisplay2] = useState("");
@@ -34,30 +34,30 @@ export default function GameContextProvider({ children }) {
   const [display5, setDisplay5] = useState("");
 
   async function getGuess() {
-   
-    
-
     if (display5 !== "") {
       const guess = display1 + display2 + display3 + display4 + display5;
       //console.log("important string!", guess);
       const isAllowedGuess = await checkDB(guess);
-        if( isAllowedGuess.rowCount > 0 ) {
-          let solutionarray = currentGame.solution.split('');
-          
-          if(solutionarray[0] == display1.toLowerCase()) {
-            console.log('perfect')
-          }
-          else if(solutionarray[0] == display2.toLowerCase() || solutionarray[0] == display3.toLowerCase()|| solutionarray[0] == display4.toLowerCase()|| solutionarray[0] == display5.toLowerCase()){
-            console.log('good')
-          }
-          else {
-            console.log('back')
-          }
+      if (isAllowedGuess.rowCount > 0) {
+        let solutionarray = currentGame.solution.split("");
 
-          console.log("It is a valid word but might not be correct")
+        if (solutionarray[0] == display1.toLowerCase()) {
+          console.log("perfect");
+        } else if (
+          solutionarray[0] == display2.toLowerCase() ||
+          solutionarray[0] == display3.toLowerCase() ||
+          solutionarray[0] == display4.toLowerCase() ||
+          solutionarray[0] == display5.toLowerCase()
+        ) {
+          console.log("good");
         } else {
-          console.log("Not a valid word")
+          console.log("back");
         }
+
+        console.log("It is a valid word but might not be correct");
+      } else {
+        console.log("Not a valid word");
+      }
 
       console.log(isAllowedGuess);
     } else {
@@ -73,12 +73,11 @@ export default function GameContextProvider({ children }) {
       const solution = await getTheWord();
       console.log(solution, user);
       createGame(solution, user);
-    } 
-    else {
+    } else {
       let gameValues = {};
       if (isGame.rows[0]) {
         gameValues = isGame.rows[0];
-        const copyCurrentGame = {...currentGameObject};
+        const copyCurrentGame = { ...currentGameObject };
         copyCurrentGame.id = gameValues.id;
         copyCurrentGame.user_id = gameValues.user_id;
         copyCurrentGame.game_start_time = gameValues.game_start_time;
@@ -89,7 +88,7 @@ export default function GameContextProvider({ children }) {
   }
 
   function updateCurrentGame(copiedObject) {
-    setCurrentGame({...currentGame, ...copiedObject});
+    setCurrentGame({ ...currentGame, ...copiedObject });
   }
 
   function typeInLine(key) {
@@ -106,8 +105,22 @@ export default function GameContextProvider({ children }) {
     }
   }
 
+  function deleteLetter() {
+    if (display5 !== "") {
+      setDisplay5("");
+    } else if (display5 === "" && display4 !== "") {
+      setDisplay4("");
+    } else if (display5 === "" && display4 === "" && display3 !== "") {
+      setDisplay3("");
+    } else if (display5 === "" && display4 === "" && display3 === "" && display2 !== "") {
+      setDisplay2("");
+    } else if (display5 === "" && display4 === "" && display3 === "" && display2 === "" && display1 !== "") {
+      setDisplay1("");
+    }
+  }
+
   return (
-    <GameContext.Provider value={{ currentGame, display1, display2, display3, display4, display5, getGuess, typeInLine, startNewGame }}>
+    <GameContext.Provider value={{ currentGame, display1, display2, display3, display4, display5, getGuess, typeInLine, startNewGame, deleteLetter }}>
       {children}
     </GameContext.Provider>
   );
