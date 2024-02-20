@@ -20,7 +20,7 @@ export default function GameContextProvider({ children }) {
     guess_six: null,
     duration: null,
     success: null,
-    score: null
+    score: null,
   };
 
   const [currentGame, setCurrentGame] = useState(currentGameObject);
@@ -46,10 +46,17 @@ export default function GameContextProvider({ children }) {
   async function startNewGame() {
     const user = await getUserId();
     const isGame = await checkGame(user);
-    if(!isGame) {
+    if (!isGame) {
       const solution = await getTheWord();
       console.log(solution, user);
       createGame(solution, user);
+    } else {
+      let gameValues = {};
+      if (isGame.rows[0]) {
+        gameValues = isGame.rows[0];
+      }
+      let loadCurrentGame = { ...currentGameObject };
+      console.log(loadCurrentGame);
     }
   }
 
