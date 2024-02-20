@@ -55,17 +55,12 @@ export default function GameContextProvider({ children }) {
       if (isGame.rows[0]) {
         gameValues = isGame.rows[0];
       }
-      // setCurrentGame = { ...currentGameObject };
-      // console.log(currentGame);
-      let copyCurrentGame = { ...currentGame };
-      console.log(copyCurrentGame);
-      copyCurrentGame.id = gameValues.id;
-      copyCurrentGame.user_id = gameValues.user_id;
-      copyCurrentGame.game_start_time = gameValues.game_start_time;
-      copyCurrentGame.solution = gameValues.solution;
-      console.log(copyCurrentGame);
-      currentGame = { ...copyCurrentGame };
-      setCurrentGame(...copyCurrentGame);
+      setCurrentGame(
+        (currentGame.id = gameValues.id),
+        (currentGame.user_id = gameValues.user_id),
+        (currentGame.game_start_time = gameValues.game_start_time),
+        (currentGame.solution = gameValues.solution)
+      );
       console.log(currentGame);
     }
   }
