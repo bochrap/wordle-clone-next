@@ -1,12 +1,30 @@
 "use client";
 import { createContext, useState, useContext } from "react";
-import { checkDB, getTheWord, createGame } from "@/lib/checkDB";
+import { checkDB, getTheWord, createGame, checkGame } from "@/lib/checkDB";
 import { getUserId } from "@/lib/users";
-import { sql } from "@vercel/postgres";
 
 const GameContext = createContext();
 
 export default function GameContextProvider({ children }) {
+  let currentGameObject = {
+    id: null,
+    user_id: null,
+    game_start_time: null,
+    game_end_time: null,
+    solution: null,
+    guess_one: null,
+    guess_two: null,
+    guess_three: null,
+    guess_four: null,
+    guess_five: null,
+    guess_six: null,
+    duration: null,
+    success: null,
+    score: null
+  };
+
+  const [currentGame, setCurrentGame] = useState(currentGameObject);
+
   const [display1, setDisplay1] = useState("");
   const [display2, setDisplay2] = useState("");
   const [display3, setDisplay3] = useState("");
@@ -27,9 +45,12 @@ export default function GameContextProvider({ children }) {
 
   async function startNewGame() {
     const user = await getUserId();
-    const solution = await getTheWord();
-    console.log(solution, user);
-    createGame(solution, user);
+    const isGame = await checkGame(user);
+    if(!isGame) {
+      const solution = await getTheWord();
+      console.log(solution, user);
+      createGame(solution, user);
+    }
   }
 
   function typeInLine(key) {

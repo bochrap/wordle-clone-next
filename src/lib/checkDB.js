@@ -24,3 +24,18 @@ export async function getTheWord() {
 export async function createGame(solution, user) {
   const newgame = await sql`INSERT INTO games (user_id, game_start_time, solution) VALUES (${user}, CURRENT_TIMESTAMP, ${solution})`;
 }
+
+export async function checkGame(userId) {
+  const game = await sql`SELECT * FROM games WHERE user_id=${userId}`;
+  console.log("game is ", game);
+  if (game.rowCount === 0) {
+    console.log("im zero rows ");
+    return false;
+  }
+  if (game.rows[0].game_end_time === null) {
+    return true
+  }
+  else {
+    return false
+  }
+}
