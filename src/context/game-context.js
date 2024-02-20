@@ -1,12 +1,12 @@
 "use client";
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { checkDB, getTheWord, createGame, checkGame } from "@/lib/checkDB";
 import { getUserId } from "@/lib/users";
 
 const GameContext = createContext();
 
 export default function GameContextProvider({ children }) {
-  let currentGameObject = [{
+  let currentGameObject = {
     id: null,
     user_id: null,
     game_start_time: null,
@@ -21,9 +21,11 @@ export default function GameContextProvider({ children }) {
     duration: null,
     success: null,
     score: null,
-  }];
+  }
 
   const [currentGame, setCurrentGame] = useState(currentGameObject);
+
+  const [gamesolution, setGamesolution] = useState()
 
   const [display1, setDisplay1] = useState("");
   const [display2, setDisplay2] = useState("");
@@ -32,10 +34,31 @@ export default function GameContextProvider({ children }) {
   const [display5, setDisplay5] = useState("");
 
   async function getGuess() {
+   
+    
+
     if (display5 !== "") {
       const guess = display1 + display2 + display3 + display4 + display5;
       //console.log("important string!", guess);
       const isAllowedGuess = await checkDB(guess);
+        if( isAllowedGuess.rowCount > 0 ) {
+          let solutionarray = currentGame.solution.split('');
+          
+          if(solutionarray[0] == display1.toLowerCase()) {
+            console.log('perfect')
+          }
+          else if(solutionarray[0] == display2.toLowerCase() || solutionarray[0] == display3.toLowerCase()|| solutionarray[0] == display4.toLowerCase()|| solutionarray[0] == display5.toLowerCase()){
+            console.log('good')
+          }
+          else {
+            console.log('back')
+          }
+
+          console.log("It is a valid word but might not be correct")
+        } else {
+          console.log("Not a valid word")
+        }
+
       console.log(isAllowedGuess);
     } else {
       // getTheWord();
@@ -60,16 +83,13 @@ export default function GameContextProvider({ children }) {
         copyCurrentGame.user_id = gameValues.user_id;
         copyCurrentGame.game_start_time = gameValues.game_start_time;
         copyCurrentGame.solution = gameValues.solution;
-        console.log("copy current game", copyCurrentGame);
         updateCurrentGame(copyCurrentGame);
       }
     }
   }
 
   function updateCurrentGame(copiedObject) {
-    console.log("my copied objectis ", copiedObject);
     setCurrentGame({...currentGame, ...copiedObject});
-    console.log("now current game is ", currentGame);
   }
 
   function typeInLine(key) {
