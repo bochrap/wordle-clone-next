@@ -8,7 +8,7 @@ import { getUserId } from "@/lib/users";
 
 
 export default function PlayPage() {
-    const {startNewGame} = useGameContext ();
+    const {startNewGame, currentGame } = useGameContext ();
     const smartUseEffect = useRef(false);
     useEffect(() => {
       if (!smartUseEffect.current) {

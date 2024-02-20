@@ -21,9 +21,11 @@ export default function GameContextProvider({ children }) {
     duration: null,
     success: null,
     score: null,
-  };
+  }
+
+  const [currentGame, setCurrentGame] = useState(currentGameObject);
+
   const [gamesolution, setGamesolution] = useState()
-  let [currentGame, setCurrentGame] = useState(currentGameObject);
 
   const [display1, setDisplay1] = useState("");
   const [display2, setDisplay2] = useState("");
@@ -40,7 +42,7 @@ export default function GameContextProvider({ children }) {
       //console.log("important string!", guess);
       const isAllowedGuess = await checkDB(guess);
         if( isAllowedGuess.rowCount > 0 ) {
-          let solutionarray = gamesolution.split('');
+          let solutionarray = currentGame.solution.split('');
           
           if(solutionarray[0] == display1.toLowerCase()) {
             console.log('perfect')
@@ -71,20 +73,23 @@ export default function GameContextProvider({ children }) {
       const solution = await getTheWord();
       console.log(solution, user);
       createGame(solution, user);
-    } else {
+    } 
+    else {
       let gameValues = {};
       if (isGame.rows[0]) {
         gameValues = isGame.rows[0];
+        const copyCurrentGame = {...currentGameObject};
+        copyCurrentGame.id = gameValues.id;
+        copyCurrentGame.user_id = gameValues.user_id;
+        copyCurrentGame.game_start_time = gameValues.game_start_time;
+        copyCurrentGame.solution = gameValues.solution;
+        updateCurrentGame(copyCurrentGame);
       }
-      setCurrentGame(
-        (currentGame.id = gameValues.id),
-        (currentGame.user_id = gameValues.user_id),
-        (currentGame.game_start_time = gameValues.game_start_time),
-        (currentGame.solution = gameValues.solution)
-      );
-      setGamesolution(gameValues.solution);
-      console.log(currentGame);
     }
+  }
+
+  function updateCurrentGame(copiedObject) {
+    setCurrentGame({...currentGame, ...copiedObject});
   }
 
   function typeInLine(key) {
@@ -102,7 +107,7 @@ export default function GameContextProvider({ children }) {
   }
 
   return (
-    <GameContext.Provider value={{ display1, display2, display3, display4, display5, getGuess, typeInLine, startNewGame }}>
+    <GameContext.Provider value={{ currentGame, display1, display2, display3, display4, display5, getGuess, typeInLine, startNewGame }}>
       {children}
     </GameContext.Provider>
   );
