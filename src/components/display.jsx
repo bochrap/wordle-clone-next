@@ -14,7 +14,7 @@ export default function Display() {
   let { display4state } = useGameContext();
   let { display5state } = useGameContext();
 
-  let { row1 } = useGameContext();
+  const { row1, row2 } = useGameContext();
 
   return (
     <div id="line">
@@ -24,7 +24,13 @@ export default function Display() {
       <p className={`display-box ${display4state}`}>{display4}</p>
       <p className={`display-box ${display5state}`}>{display5}</p> */}
       {row1.map((object, index) => { return (
-          <div key={`${object.value} + ${object.class} + ${index}`}>
+          <div key={`row1 + ${object.value} + ${object.class} + ${index}`}>
+            <p className={`display-box ${object.class}`}>{object.value}</p>
+          </div>
+        )
+        })}
+      {row2.map((object, index) => { return (
+          <div key={`row2 + ${object.value} + ${object.class} + ${index}`}>
             <p className={`display-box ${object.class}`}>{object.value}</p>
           </div>
         )

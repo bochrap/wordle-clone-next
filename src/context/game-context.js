@@ -25,13 +25,13 @@ export default function GameContextProvider({ children }) {
     score: null,
   };
 
-  const displayObject = {
+const displayObject = {
     value: "",
     class: "default",
   }
-  const rowArray = [
-    displayObject, displayObject, displayObject, displayObject, displayObject
-  ];
+  // const rowArray = [
+  //   ...displayObject, ...displayObject, ...displayObject, ...displayObject, ...displayObject
+  // ];  
 
   const [currentGame, setCurrentGame] = useState(currentGameObject);
   const [currentRow, setCurrentRow] = useState(1);
@@ -54,11 +54,28 @@ export default function GameContextProvider({ children }) {
     class: "default",
   }
   ]);
-  const [ rowTwo, setRowTwo] = useState(rowArray);
-  const [ rowThree, setRowThree] = useState(rowArray);
-  const [ rowFour, setRowFour] = useState(rowArray);
-  const [ rowFive, setRowFive] = useState(rowArray);
-  const [ rowSix, setRowSix ] = useState(rowArray);
+  const [ row2, setRow2] = useState([
+    {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }
+  ]);
+  // const [ rowThree, setRowThree] = useState(rowArray);
+  // const [ rowFour, setRowFour] = useState(rowArray);
+  // const [ rowFive, setRowFive] = useState(rowArray);
+  // const [ rowSix, setRowSix ] = useState(rowArray);
 
   const [display1, setDisplay1] = useState("");
   const [display2, setDisplay2] = useState("");
@@ -131,7 +148,7 @@ export default function GameContextProvider({ children }) {
         const sumMatrix = columnSums.map((element, index) => element + diagonalResults[index]);
 
         changeColours(sumMatrix);
-
+        setCurrentRow(2);
         // THIS IS THE END OF MY CHANGES (EDUARDO)
 
       } else {
@@ -231,11 +248,11 @@ export default function GameContextProvider({ children }) {
         display4state,
         display5state,
         row1,
-        rowTwo,
-        rowThree,
-        rowFour,
-        rowFive,
-        rowSix,
+        row2,
+        // rowThree,
+        // rowFour,
+        // rowFive,
+        // rowSix,
         runToast,
       }}
     >
