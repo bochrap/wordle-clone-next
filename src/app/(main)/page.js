@@ -33,10 +33,6 @@ export default function Home() {
           <p>Improve your vocabulary and become a Wordly Master!</p>
         </div>
       </section>
-      
-      <footer className="footer">
-        <p>© 2024 Wordly Game. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
