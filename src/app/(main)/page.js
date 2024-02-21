@@ -20,7 +20,7 @@ export default function Home() {
       <section className="features">
         <div className="feature">
           <h2>Word Quests</h2>
-          <p>Embark on epic word quests, solve puzzles, and unlock your potencial.</p>
+          <p>Embark on epic word quests, solve the puzzle, and unlock your potencial.</p>
         </div>
 
         <div className="feature">
