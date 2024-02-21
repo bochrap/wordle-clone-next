@@ -3,7 +3,7 @@ import "./Keyboard.css";
 import { useGameContext } from "@/context/game-context";
 
 export default function Keyboard() {
-  const { typeInLine, getGuess, deleteLetter } = useGameContext();
+  const { typeInLine, getGuess, deleteLetter, rowOne } = useGameContext();
   //const { getGuess } = useGameContext();
 
   const firstRow = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
@@ -60,7 +60,7 @@ export default function Keyboard() {
         ))}
         <button
           onClick={() => {
-            getGuess();
+            getGuess(rowOne);
           }}
           id="enter-button"
         >

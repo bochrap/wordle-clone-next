@@ -33,8 +33,26 @@ export default function GameContextProvider({ children }) {
   ];
 
   const [currentGame, setCurrentGame] = useState(currentGameObject);
+  const [currentRow, setCurrentRow] = useState(1);
 
-  const [ rowOne, setRowOne] = useState(rowArray);
+  const [ row1, setRow1] = useState([
+    {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }
+  ]);
   const [ rowTwo, setRowTwo] = useState(rowArray);
   const [ rowThree, setRowThree] = useState(rowArray);
   const [ rowFour, setRowFour] = useState(rowArray);
@@ -56,6 +74,7 @@ export default function GameContextProvider({ children }) {
 
   
   async function getGuess(currentRowArray) {
+    console.log("current row array ", currentRowArray);
     if (currentRowArray[4].value !== "") {
       const guess = currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
       //console.log("important string!", guess);
@@ -160,25 +179,27 @@ export default function GameContextProvider({ children }) {
   }
 
   function typeInLine(key) {
-    const copyRow = {...rowArray}
-    if (display1 === "") {
-      setDisplay1(key);
+    const copyRow = [...eval(`row${currentRow}`) ];
+    if (eval(`row${currentRow}[0].value === "" `)) {
+      //setDisplay1(key);
+      console.log("inside first index ");
       copyRow[0].value = key;
       
-    } else if (display1 !== "" && display2 === "") {
-      setDisplay2(key);
+    } else if (rowOne[0].value !== "" && rowOne[1].value === "") {
+      //setcopyRow[0].value(key);
       copyRow[1].value = key;
-    } else if (display1 !== "" && display2 !== "" && display3 === "") {
-      setDisplay3(key);
+    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value === "") {
+      //setcopyRow[0].value(key);
       copyRow[2].value = key;
-    } else if (display1 !== "" && display2 !== "" && display3 !== "" && display4 === "") {
-      setDisplay4(key);
+    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value === "") {
+      //setcopyRow[0].value(key);
       copyRow[3].value = key;
-    } else if (display1 !== "" && display2 !== "" && display3 !== "" && display4 !== "" && display5 === "") {
-      setDisplay5(key);
+    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value !== "" && copyRow[4].value === "") {
+      //setDisplay5(key);
       copyRow[4].value = key;
     }
-    setRowOne([ ...rowOne, copyRow ]);
+    console.log("Now copy row is", copyRow);
+    eval(`setRow${currentRow}(copyRow);`)
   }
 
   function deleteLetter() {
@@ -213,7 +234,7 @@ export default function GameContextProvider({ children }) {
         display3state,
         display4state,
         display5state,
-        rowOne,
+        row1,
         rowTwo,
         rowThree,
         rowFour,
