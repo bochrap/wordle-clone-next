@@ -6,17 +6,16 @@ import { useGameContext } from "@/context/game-context";
 import { checkGame } from "@/lib/checkDB";
 import { getUserId } from "@/lib/users";
 
-
 export default function PlayPage() {
-    const {startNewGame, currentGame } = useGameContext ();
-    const smartUseEffect = useRef(false);
-    useEffect(() => {
-      if (!smartUseEffect.current) {
-        console.log("i should only run one time");
-        startNewGame();
-      }
-      return () => smartUseEffect.current = true;
-    }, []);
+  const { startNewGame, currentGame } = useGameContext();
+  const smartUseEffect = useRef(false);
+  useEffect(() => {
+    if (!smartUseEffect.current) {
+      console.log("i should only run one time");
+      startNewGame();
+    }
+    return () => (smartUseEffect.current = true);
+  }, []);
   return (
     <div>
       <Display />

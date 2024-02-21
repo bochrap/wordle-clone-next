@@ -1,10 +1,12 @@
 "use client";
 import "./Keyboard.css";
 import { useGameContext } from "@/context/game-context";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Keyboard() {
-  const { typeInLine, getGuess, deleteLetter, rowOne } = useGameContext();
-  //const { getGuess } = useGameContext();
+
+  const { typeInLine, getGuess, deleteLetter, runToast } = useGameContext();
+
 
   const firstRow = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const secondRow = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
@@ -12,6 +14,7 @@ export default function Keyboard() {
 
   return (
     <div id="keyboard-container">
+      <Toaster />
       <div className="keys-row">
         {firstRow.map((key, index) => (
           <button

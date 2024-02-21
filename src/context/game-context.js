@@ -2,6 +2,7 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { checkDB, getTheWord, createGame, checkGame } from "@/lib/checkDB";
 import { getUserId } from "@/lib/users";
+import toast from "react-hot-toast";
 
 const GameContext = createContext();
 
@@ -149,7 +150,12 @@ export default function GameContextProvider({ children }) {
     } else {
       // getTheWord();
       console.log("BAD BOY!");
+      runToast("BAD BOY");
     }
+  }
+
+  function runToast(message) {
+    toast.error(message);
   }
 
   async function startNewGame() {
@@ -240,6 +246,7 @@ export default function GameContextProvider({ children }) {
         rowFour,
         rowFive,
         rowSix,
+        runToast,
       }}
     >
       {children}
