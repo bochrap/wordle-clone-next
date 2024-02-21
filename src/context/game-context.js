@@ -6,96 +6,58 @@ import toast from "react-hot-toast";
 
 const GameContext = createContext();
 
-export default function GameContextProvider({ children }) {
-  let currentGameObject = {
-    id: null,
-    user_id: null,
-    game_start_time: null,
-    game_end_time: null,
-    solution: null,
-    guess_one: null,
-    guess_two: null,
-    guess_three: null,
-    guess_four: null,
-    guess_five: null,
-    guess_six: null,
-    duration: null,
-    success: null,
-    current_guess: 1,
-    score: null,
-  };
-
-  const displayObject = {
+const initialState = [
+  {
     value: "",
     class: "default",
-  };
-  // const rowArray = [
-  //   ...displayObject, ...displayObject, ...displayObject, ...displayObject, ...displayObject
-  // ];
+  },
+  {
+    value: "",
+    class: "default",
+  },
+  {
+    value: "",
+    class: "default",
+  },
+  {
+    value: "",
+    class: "default",
+  },
+  {
+    value: "",
+    class: "default",
+  },
+];
 
-  const [currentGame, setCurrentGame] = useState(currentGameObject);
-  const [currentRow, setCurrentRow] = useState(1);
+const currentGameObject = {
+  id: null,
+  user_id: null,
+  game_start_time: null,
+  game_end_time: null,
+  solution: null,
+  guess_one: null,
+  guess_two: null,
+  guess_three: null,
+  guess_four: null,
+  guess_five: null,
+  guess_six: null,
+  duration: null,
+  success: null,
+  current_guess: 1,
+  score: null,
+};
 
-  const [row1, setRow1] = useState([
-    {
-      value: "",
-      class: "default",
-    },
-    {
-      value: "",
-      class: "default",
-    },
-    {
-      value: "",
-      class: "default",
-    },
-    {
-      value: "",
-      class: "default",
-    },
-    {
-      value: "",
-      class: "default",
-    },
-  ]);
-  const [row2, setRow2] = useState([
-    {
-      value: "",
-      class: "default",
-    },
-    {
-      value: "",
-      class: "default",
-    },
-    {
-      value: "",
-      class: "default",
-    },
-    {
-      value: "",
-      class: "default",
-    },
-    {
-      value: "",
-      class: "default",
-    },
-  ]);
-  // const [ rowThree, setRowThree] = useState(rowArray);
-  // const [ rowFour, setRowFour] = useState(rowArray);
-  // const [ rowFive, setRowFive] = useState(rowArray);
-  // const [ rowSix, setRowSix ] = useState(rowArray);
+export default function GameContextProvider({ children }) {
 
-  const [display1, setDisplay1] = useState("");
-  const [display2, setDisplay2] = useState("");
-  const [display3, setDisplay3] = useState("");
-  const [display4, setDisplay4] = useState("");
-  const [display5, setDisplay5] = useState("");
+  const [ currentGame, setCurrentGame ] = useState(JSON.parse(JSON.stringify(currentGameObject)));
+  const [ currentRow, setCurrentRow ] = useState(1);
 
-  const [display1state, setDisplay1state] = useState("default");
-  const [display2state, setDisplay2state] = useState("default");
-  const [display3state, setDisplay3state] = useState("default");
-  const [display4state, setDisplay4state] = useState("default");
-  const [display5state, setDisplay5state] = useState("default");
+  const [ row1, setRow1 ] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [ row2, setRow2 ] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [ row3, setRow3 ] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [ row4, setRow4 ] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [ row5, setRow5 ] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [ row6, setRow6 ] = useState(JSON.parse(JSON.stringify(initialState)));
 
   function endCurrentGame() {
     gameEndQuery(currentGame);
@@ -103,17 +65,15 @@ export default function GameContextProvider({ children }) {
 
   function changeColours(sumMatrix) {
     const copyRow = [...eval(`row${currentRow}`)];
-    console.log("copy row inside of colours function is ", copyRow);
     sumMatrix.forEach((element, index) => {
       if (element === 0) {
         copyRow[index].class = "grey";
-        console.log(index, "grey");
-      } else if (element === 1) {
+      } 
+      else if (element === 1) {
         copyRow[index].class = "yellow";
-        console.log(index, "yellow");
-      } else if (element === 2) {
+      } 
+      else if (element === 2) {
         copyRow[index].class = "green";
-        console.log(index, "green");
       }
     });
     eval(`setRow${currentRow}(copyRow);`);
@@ -127,7 +87,6 @@ export default function GameContextProvider({ children }) {
       const isAllowedGuess = await checkDB(guess);
       if (isAllowedGuess.rowCount > 0) {
         let solutionarray = currentGame.solution.split("");
-        // MY CHANGES START HERE (EDUARDO)
 
         let guessarray = [
           currentRowArray[0].value.toLowerCase(),
@@ -170,15 +129,18 @@ export default function GameContextProvider({ children }) {
         if (sumMatrix[0] === 2 && sumMatrix[1] === 2 && sumMatrix[2] === 2 && sumMatrix[3] === 2 && sumMatrix[4] === 2) {
           endCurrentGame();
         }
-        // setCurrentRow(2);
+        else {
+          setCurrentRow(currentRow + 1);
+        }
 
         function updateGameTable() {}
 
-        // THIS IS THE END OF MY CHANGES (EDUARDO)
-      } else {
+      } 
+      else {
         runToast("NOT A VALID GUESS");
       }
-    } else {
+    } 
+    else {
       runToast("TYPE 5 LETTER WORD");
     }
   }
@@ -193,7 +155,8 @@ export default function GameContextProvider({ children }) {
     if (!isGame) {
       const solution = await getTheWord();
       createGame(solution, user);
-    } else {
+    } 
+    else {
       let gameValues = {};
       if (isGame.rows[0]) {
         gameValues = isGame.rows[0];
@@ -215,20 +178,18 @@ export default function GameContextProvider({ children }) {
   function typeInLine(key) {
     const copyRow = [...eval(`row${currentRow}`)];
     if (copyRow[0].value === "") {
-      //setDisplay1(key);
-      console.log("inside first index ");
       copyRow[0].value = key;
-    } else if (copyRow[0].value !== "" && copyRow[1].value === "") {
-      //setcopyRow[0].value(key);
+    } 
+    else if (copyRow[0].value !== "" && copyRow[1].value === "") {
       copyRow[1].value = key;
-    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value === "") {
-      //setcopyRow[0].value(key);
+    } 
+    else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value === "") {
       copyRow[2].value = key;
-    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value === "") {
-      //setcopyRow[0].value(key);
+    } 
+    else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value === "") {
       copyRow[3].value = key;
-    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value !== "" && copyRow[4].value === "") {
-      //setDisplay5(key);
+    } 
+    else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value !== "" && copyRow[4].value === "") {
       copyRow[4].value = key;
     }
     eval(`setRow${currentRow}(copyRow);`);
@@ -238,13 +199,17 @@ export default function GameContextProvider({ children }) {
     const copyRow = [...eval(`row${currentRow}`)];
     if (copyRow[4].value !== "") {
       copyRow[4].value = "";
-    } else if (copyRow[4].value === "" && copyRow[3].value !== "") {
+    } 
+    else if (copyRow[4].value === "" && copyRow[3].value !== "") {
       copyRow[3].value = "";
-    } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value !== "") {
+    } 
+    else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value !== "") {
       copyRow[2].value = "";
-    } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value !== "") {
+    } 
+    else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value !== "") {
       copyRow[1].value = "";
-    } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value === "" && copyRow[0].value !== "") {
+    } 
+    else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value === "" && copyRow[0].value !== "") {
       copyRow[0].value = "";
     }
     eval(`setRow${currentRow}(copyRow);`);
@@ -254,26 +219,16 @@ export default function GameContextProvider({ children }) {
     <GameContext.Provider
       value={{
         currentGame,
-        display1,
-        display2,
-        display3,
-        display4,
-        display5,
         getGuess,
         typeInLine,
         startNewGame,
         deleteLetter,
-        display1state,
-        display2state,
-        display3state,
-        display4state,
-        display5state,
         row1,
         row2,
-        // rowThree,
-        // rowFour,
-        // rowFive,
-        // rowSix,
+        row3,
+        row4,
+        row5,
+        row6,
         runToast,
       }}
     >
