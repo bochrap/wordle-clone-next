@@ -7,7 +7,7 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f8f8f8;
+  background-color: #fff6ed;
 }
 
 nav {
@@ -133,4 +133,58 @@ nav a:hover:after {
 
 .footer:hover {
   background-color: #d2d7db;
+}
+
+/* Styles for tablet devices */
+@media only screen and (max-width: 768px) {
+  
+  .header {
+    padding: 1.5rem;
+  }
+
+  .main {
+    padding: 1.5rem;
+  }
+
+  .playButton {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+  }
+
+  .features {
+    flex-direction: column;
+  }
+
+  .feature {
+    margin: 1rem 0;
+    text-align: center;
+  }
+
+  .footer {
+    padding: 1rem 0.5rem;
+  }
+}
+
+/* Styles for mobile devices */
+@media only screen and (max-width: 480px) {
+  .header {
+    font-size: 1rem;
+  }
+
+  .main p {
+    font-size: 1rem;
+  }
+
+  .playButton {
+    font-size: 1rem;
+  }
+
+  .feature {
+    padding: 0.5rem;
+  }
+
+  .footer p {
+    font-size: 0.8rem;
+  }
 }
