@@ -1,6 +1,6 @@
 /* PlayPage.css */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   margin: 0;
   padding: 0;
   background-color: #fff6ed;
@@ -12,6 +12,10 @@ body {
   justify-content: center;
   align-items: center;
   height: 43vh;
+}
+
+.disabled {
+  background-color: black;
 }
 
 .display-box {

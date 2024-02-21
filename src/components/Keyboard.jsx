@@ -8,21 +8,43 @@ import { useGameContext } from "@/context/game-context";
 import "./Keyboard.css";
 
 export default function Keyboard() {
-
-  const { typeInLine, getGuess, deleteLetter, runToast } = useGameContext();
+  const { typeInLine, getGuess, deleteLetter, runToast, disabledButtons } = useGameContext();
 
   const firstRow = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const secondRow = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const thirdRow = ["Z", "X", "C", "V", "B", "N", "M"];
 
+  // let disabledButtons = ["A", "C", "E"];
+
+  function isButtonDisabled(key) {
+    return disabledButtons.includes(key);
+  }
+
+  function assignClass(key) {
+    if (isButtonDisabled(key)) {
+      return "disabled";
+    } else {
+      return;
+    }
+  }
+
   return (
     <div id="keyboard-container">
       <Toaster />
       <div className="keys-row">
+        <button
+          onClick={() => {
+            console.log(disabledButtons);
+          }}
+        >
+          DEBUG
+        </button>
         {firstRow.map((key, index) => (
           <button
             key={key}
             value={key}
+            disabled={isButtonDisabled(key)}
+            className={assignClass(key)}
             onClick={() => {
               typeInLine(key);
             }}
@@ -36,6 +58,8 @@ export default function Keyboard() {
           <button
             key={key}
             value={key}
+            disabled={isButtonDisabled(key)}
+            className={assignClass(key)}
             onClick={() => {
               typeInLine(key);
             }}
@@ -57,6 +81,8 @@ export default function Keyboard() {
           <button
             key={key}
             value={key}
+            disabled={isButtonDisabled(key)}
+            className={assignClass(key)}
             onClick={() => {
               typeInLine(key);
             }}

@@ -52,16 +52,17 @@ const currentGameObject = {
 };
 
 export default function GameContextProvider({ children }) {
+  const [currentGame, setCurrentGame] = useState(JSON.parse(JSON.stringify(currentGameObject)));
+  const [currentRow, setCurrentRow] = useState(1);
 
-  const [ currentGame, setCurrentGame ] = useState(JSON.parse(JSON.stringify(currentGameObject)));
-  const [ currentRow, setCurrentRow ] = useState(1);
+  const [disabledButtons, setDisabledButtons] = useState([]);
 
-  const [ row1, setRow1 ] = useState(JSON.parse(JSON.stringify(initialState)));
-  const [ row2, setRow2 ] = useState(JSON.parse(JSON.stringify(initialState)));
-  const [ row3, setRow3 ] = useState(JSON.parse(JSON.stringify(initialState)));
-  const [ row4, setRow4 ] = useState(JSON.parse(JSON.stringify(initialState)));
-  const [ row5, setRow5 ] = useState(JSON.parse(JSON.stringify(initialState)));
-  const [ row6, setRow6 ] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [row1, setRow1] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [row2, setRow2] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [row3, setRow3] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [row4, setRow4] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [row5, setRow5] = useState(JSON.parse(JSON.stringify(initialState)));
+  const [row6, setRow6] = useState(JSON.parse(JSON.stringify(initialState)));
 
   function endCurrentGame() {
     gameEndQuery(currentGame);
@@ -72,11 +73,9 @@ export default function GameContextProvider({ children }) {
     sumMatrix.forEach((element, index) => {
       if (element === 0) {
         copyRow[index].class = "grey";
-      } 
-      else if (element === 1) {
+      } else if (element === 1) {
         copyRow[index].class = "yellow";
-      } 
-      else if (element === 2) {
+      } else if (element === 2) {
         copyRow[index].class = "green";
       }
     });
@@ -131,20 +130,33 @@ export default function GameContextProvider({ children }) {
         changeColours(sumMatrix);
 
         if (sumMatrix[0] === 2 && sumMatrix[1] === 2 && sumMatrix[2] === 2 && sumMatrix[3] === 2 && sumMatrix[4] === 2) {
-          endCurrentGame();
+          // endCurrentGame();
+          runToast("Game end triggered");
+        } else {
+          disableKeys();
+          if (currentRow === 6) {
+            runToast("End game triggered (failed guess)");
+          } else {
+            runToast(`${guess.toLowerCase()} added to current game obj`);
+            setCurrentRow(currentRow + 1);
+          }
         }
-        else {
-          setCurrentRow(currentRow + 1);
+
+        function disableKeys() {
+          sumMatrix.forEach((item, index) => {
+            if (item === 0) {
+              // setDisabledButtons(disabledButtons.push(guessarray[index]));
+              setDisabledButtons((prevButtons) => [...prevButtons, guessarray[index]]);
+            }
+            runToast(disabledButtons);
+          });
         }
 
         function updateGameTable() {}
-
-      } 
-      else {
+      } else {
         runToast("NOT A VALID GUESS");
       }
-    } 
-    else {
+    } else {
       runToast("TYPE 5 LETTER WORD");
     }
   }
@@ -159,8 +171,7 @@ export default function GameContextProvider({ children }) {
     if (!isGame) {
       const solution = await getTheWord();
       createGame(solution, user);
-    } 
-    else {
+    } else {
       let gameValues = {};
       if (isGame.rows[0]) {
         gameValues = isGame.rows[0];
@@ -183,17 +194,13 @@ export default function GameContextProvider({ children }) {
     const copyRow = [...eval(`row${currentRow}`)];
     if (copyRow[0].value === "") {
       copyRow[0].value = key;
-    } 
-    else if (copyRow[0].value !== "" && copyRow[1].value === "") {
+    } else if (copyRow[0].value !== "" && copyRow[1].value === "") {
       copyRow[1].value = key;
-    } 
-    else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value === "") {
+    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value === "") {
       copyRow[2].value = key;
-    } 
-    else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value === "") {
+    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value === "") {
       copyRow[3].value = key;
-    } 
-    else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value !== "" && copyRow[4].value === "") {
+    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value !== "" && copyRow[4].value === "") {
       copyRow[4].value = key;
     }
     eval(`setRow${currentRow}(copyRow);`);
@@ -203,17 +210,13 @@ export default function GameContextProvider({ children }) {
     const copyRow = [...eval(`row${currentRow}`)];
     if (copyRow[4].value !== "") {
       copyRow[4].value = "";
-    } 
-    else if (copyRow[4].value === "" && copyRow[3].value !== "") {
+    } else if (copyRow[4].value === "" && copyRow[3].value !== "") {
       copyRow[3].value = "";
-    } 
-    else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value !== "") {
+    } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value !== "") {
       copyRow[2].value = "";
-    } 
-    else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value !== "") {
+    } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value !== "") {
       copyRow[1].value = "";
-    } 
-    else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value === "" && copyRow[0].value !== "") {
+    } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value === "" && copyRow[0].value !== "") {
       copyRow[0].value = "";
     }
     eval(`setRow${currentRow}(copyRow);`);
@@ -234,6 +237,7 @@ export default function GameContextProvider({ children }) {
         row5,
         row6,
         runToast,
+        disabledButtons,
       }}
     >
       {children}
