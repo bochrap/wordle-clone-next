@@ -63,7 +63,7 @@ export default function Keyboard() {
         ))}
         <button
           onClick={() => {
-            getGuess(rowOne);
+            getGuess();
           }}
           id="enter-button"
         >

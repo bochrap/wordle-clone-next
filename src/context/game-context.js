@@ -73,12 +73,28 @@ export default function GameContextProvider({ children }) {
   const [display5state, setDisplay5state] = useState("default");
 
 
+  function changeColours(sumMatrix) {
+    const copyRow = [...eval(`row${currentRow}`)];
+    console.log("copy row inside of colours function is ", copyRow);
+    sumMatrix.forEach((element, index) => {
+      if (element === 0) {
+        copyRow[index].class = "grey";
+        console.log(index, "grey");
+      } else if (element === 1) {
+        copyRow[index].class = "yellow";
+        console.log(index, "yellow");
+      } else if (element === 2) {
+        copyRow[index].class = "green";
+        console.log(index, "green");
+      }
+    });
+    eval(`setRow${currentRow}(copyRow);`)
+  }
   
-  async function getGuess(currentRowArray) {
-    console.log("current row array ", currentRowArray);
+  async function getGuess() {
+    const currentRowArray = eval(`row${currentRow}`);
     if (currentRowArray[4].value !== "") {
       const guess = currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
-      //console.log("important string!", guess);
       const isAllowedGuess = await checkDB(guess);
       if (isAllowedGuess.rowCount > 0) {
         let solutionarray = currentGame.solution.split("");
@@ -95,7 +111,6 @@ export default function GameContextProvider({ children }) {
           }
         }
         // Log the comparison matrix to the console
-        console.log(resultarray);
 
         // Initialize an array INLINE to store the sum of each column (check if "good")
         let columnSums = new Array(resultarray.length).fill(0);
@@ -109,47 +124,22 @@ export default function GameContextProvider({ children }) {
           }
         }
 
-        console.log("good:", columnSums);
-
         // Map results of i = j (main diagonal)(check if "perfect")
         const diagonalResults = resultarray.map((row, i) => row[i]);
-
-        console.log("Perfect:", diagonalResults);
 
         // Sum the two matrices
         const sumMatrix = columnSums.map((element, index) => element + diagonalResults[index]);
 
-        console.log(sumMatrix);
-
-        function changeColours() {
-
-
-          sumMatrix.forEach((element, index) => {
-            if (element === 0) {
-              eval(`setDisplay${index + 1}state("grey")`);
-              console.log(index, "grey");
-            } else if (element === 1) {
-              eval(`setDisplay${index + 1}state("yellow")`);
-              console.log(index, "yellow");
-            } else if (element === 2) {
-              eval(`setDisplay${index + 1}state("green")`);
-              console.log(index, "green");
-            }
-          });
-        }
-        changeColours();
+        changeColours(sumMatrix);
 
         // THIS IS THE END OF MY CHANGES (EDUARDO)
 
-        console.log("It is a valid word but might not be correct");
       } else {
         console.log("Not a valid word");
       }
 
-      console.log(isAllowedGuess);
     } else {
       // getTheWord();
-      console.log("BAD BOY!");
       runToast("BAD BOY");
     }
   }
@@ -163,7 +153,6 @@ export default function GameContextProvider({ children }) {
     const isGame = await checkGame(user);
     if (!isGame) {
       const solution = await getTheWord();
-      console.log(solution, user);
       createGame(solution, user);
     } else {
       let gameValues = {};
@@ -186,12 +175,12 @@ export default function GameContextProvider({ children }) {
 
   function typeInLine(key) {
     const copyRow = [...eval(`row${currentRow}`) ];
-    if (eval(`row${currentRow}[0].value === "" `)) {
+    if (copyRow[0].value === "" ) {
       //setDisplay1(key);
       console.log("inside first index ");
       copyRow[0].value = key;
       
-    } else if (rowOne[0].value !== "" && rowOne[1].value === "") {
+    } else if (copyRow[0].value !== "" && copyRow[1].value === "" ) {
       //setcopyRow[0].value(key);
       copyRow[1].value = key;
     } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value === "") {
@@ -204,22 +193,23 @@ export default function GameContextProvider({ children }) {
       //setDisplay5(key);
       copyRow[4].value = key;
     }
-    console.log("Now copy row is", copyRow);
     eval(`setRow${currentRow}(copyRow);`)
   }
 
   function deleteLetter() {
-    if (display5 !== "") {
-      setDisplay5("");
-    } else if (display5 === "" && display4 !== "") {
-      setDisplay4("");
-    } else if (display5 === "" && display4 === "" && display3 !== "") {
-      setDisplay3("");
-    } else if (display5 === "" && display4 === "" && display3 === "" && display2 !== "") {
-      setDisplay2("");
-    } else if (display5 === "" && display4 === "" && display3 === "" && display2 === "" && display1 !== "") {
-      setDisplay1("");
+    const copyRow = [...eval(`row${currentRow}`) ];
+    if (copyRow[4].value !== "") {
+      copyRow[4].value = "";
+    } else if (copyRow[4].value === "" && copyRow[3].value !== "") {
+      copyRow[3].value = "";
+    } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value !== "") {
+      copyRow[2].value = "";
+    } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value !== "") {
+      copyRow[1].value = "";
+    } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value === "" && copyRow[0].value !== "") {
+      copyRow[0].value = "";
     }
+    eval(`setRow${currentRow}(copyRow);`)
   }
 
   return (
