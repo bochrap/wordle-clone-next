@@ -1,6 +1,17 @@
+/* PlayPage.css */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff6ed;
+}
+
 #line {
   display: flex;
-  gap: 3px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 43vh;
 }
 
 .display-box {
@@ -10,6 +21,47 @@
   width: 50px;
   height: 50px;
   border: 1px solid black;
+  margin: 5px;
+  font-size: 1.2em;
+  background-color: #fff;
+}
+
+#keyboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5rem;
+}
+
+.keys-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  font-size: 1.2em;
+  background-color: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #27ae60;
+}
+
+#del-button,
+#enter-button {
+  background-color: #e74c3c;
+}
+
+#del-button:hover,
+#enter-button:hover {
+  background-color: #c0392b;
 }
 
 .default {
@@ -28,11 +80,28 @@
   background-color: rgb(73, 73, 73);
 }
 
-#enter-button {
-  margin-left: 50px;
+/* Styles for tablet devices */
+@media only screen and (max-width: 768px) {
+  .display-box {
+    font-size: 0.8em;
+  }
+
+  #keyboard-container {
+    margin-top: 10px;
+  }
+
+  button {
+    font-size: 0.9em;
+  }
 }
 
-#del-button {
-  margin-left: 38px;
-  /* font-size: 16px; */
+/* Styles for mobile devices */
+@media only screen and (max-width: 480px) {
+  .display-box {
+    font-size: 0.7em;
+  }
+
+  button {
+    font-size: 0.8em;
+  }
 }

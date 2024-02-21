@@ -1,7 +1,7 @@
 "use client";
-import "./Keyboard.css";
 import { useGameContext } from "@/context/game-context";
 import toast, { Toaster } from "react-hot-toast";
+import "./Keyboard.css";
 
 export default function Keyboard() {
 

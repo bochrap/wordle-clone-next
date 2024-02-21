@@ -1,6 +1,7 @@
 "use client";
 import { useGameContext } from "@/context/game-context";
 
+
 export default function Display() {
   let { display1 } = useGameContext();
   let { display2 } = useGameContext();

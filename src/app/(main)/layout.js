@@ -26,6 +26,9 @@ export default async function RootLayout({ children }) {
               <Link href="/play">Play</Link>
             </nav>
           {children}
+          <footer className="footer">
+        <p>© 2024 Wordly Game. All rights reserved.</p>
+      </footer>
         </body>
       </GameContextProvider>
     </html>
