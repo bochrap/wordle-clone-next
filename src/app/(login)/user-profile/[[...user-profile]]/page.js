@@ -1,5 +1,4 @@
-/* ----- Global Imports ----- */
-
+/* ----- Third Party Imports ----- */
 import { UserProfile } from "@clerk/nextjs";
 
 export default function UserProfilePage() {

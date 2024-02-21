@@ -1,8 +1,12 @@
 "use client";
-import { createContext, useState, useContext, useEffect } from "react";
+
+/* ----- Third Party Imports ----- */
+import { createContext, useState, useContext } from "react";
+import toast from "react-hot-toast";
+
+/* ----- Project Imports ----- */
 import { checkDB, getTheWord, createGame, checkGame, gameEndQuery } from "@/lib/checkDB";
 import { getUserId } from "@/lib/users";
-import toast from "react-hot-toast";
 
 const GameContext = createContext();
 

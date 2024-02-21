@@ -1,4 +1,4 @@
-/* ----- Global Imports ----- */ 
+/* ----- Third Party Imports ----- */
 import { ClerkProvider } from "@clerk/nextjs";
 
 /* ----- Project Imports ----- */

@@ -1,7 +1,7 @@
+/* ----- Third Party Imports ----- */
 import { ClerkProvider, UserButton, auth, currentUser, clerkClient, getAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { sql } from "@vercel/postgres";
-
 
 export default async function LoginManager() {
     const { userId } = auth();

@@ -1,10 +1,11 @@
 "use client";
-import Keyboard from "@/components/Keyboard";
-import Display from "@/components/display";
+/* ----- Third Party Imports ----- */
 import { useEffect, useRef } from "react";
+
+/* ----- Project Imports ----- */
 import { useGameContext } from "@/context/game-context";
-import { checkGame } from "@/lib/checkDB";
-import { getUserId } from "@/lib/users";
+import Keyboard from "@/components/Keyboard";
+import Display from "@/components/Display";
 
 export default function PlayPage() {
   const { startNewGame, currentGame } = useGameContext();

@@ -1,8 +1,8 @@
-'use server';
+"use server";
+
+/* ----- Third Party Imports ----- */
 import { auth, currentUser } from "@clerk/nextjs";
 import { sql } from "@vercel/postgres";
-
-
 
 export async function getUserId (){
     const { userId } = auth();

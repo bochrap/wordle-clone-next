@@ -1,8 +1,10 @@
-/* ----- Global Imports ----- */ 
+/* ----- Third Party Imports ----- */
 import { ClerkProvider, UserButton, auth, currentUser, clerkClient, getAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import GameContextProvider from "@/context/game-context";
-import LoginManager from "@/components/loginmanage";
+
+/* ----- Project Imports ----- */
+import LoginManager from "@/components/LoginManager";
 import './globals.css';
 
 export const metadata = {
