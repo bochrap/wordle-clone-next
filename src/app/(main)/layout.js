@@ -3,8 +3,7 @@ import { ClerkProvider, UserButton, auth, currentUser, clerkClient, getAuth } fr
 import Link from "next/link";
 import GameContextProvider from "@/context/game-context";
 import LoginManager from "@/components/loginmanage";
-
-import "./globals.css";
+import './globals.css';
 
 export const metadata = {
   title: "Wordle by the Lads",
@@ -22,6 +21,10 @@ export default async function RootLayout({ children }) {
       <GameContextProvider>
         <body>
          <LoginManager/>
+         <nav>
+              <Link href="/">Home</Link>
+              <Link href="/play">Play</Link>
+            </nav>
           {children}
         </body>
       </GameContextProvider>
