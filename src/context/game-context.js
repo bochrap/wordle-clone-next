@@ -21,12 +21,44 @@ export default function GameContextProvider({ children }) {
     guess_six: null,
     duration: null,
     success: null,
+    current_guess: 1,
     score: null,
   };
 
-  const [currentGame, setCurrentGame] = useState(currentGameObject);
+  const displayObject = {
+    value: "",
+    class: "default",
+  }
+  const rowArray = [
+    displayObject, displayObject, displayObject, displayObject, displayObject
+  ];
 
-  const [gamesolution, setGamesolution] = useState();
+  const [currentGame, setCurrentGame] = useState(currentGameObject);
+  const [currentRow, setCurrentRow] = useState(1);
+
+  const [ row1, setRow1] = useState([
+    {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }, {
+    value: "",
+    class: "default",
+  }
+  ]);
+  const [ rowTwo, setRowTwo] = useState(rowArray);
+  const [ rowThree, setRowThree] = useState(rowArray);
+  const [ rowFour, setRowFour] = useState(rowArray);
+  const [ rowFive, setRowFive] = useState(rowArray);
+  const [ rowSix, setRowSix ] = useState(rowArray);
 
   const [display1, setDisplay1] = useState("");
   const [display2, setDisplay2] = useState("");
@@ -40,16 +72,19 @@ export default function GameContextProvider({ children }) {
   const [display4state, setDisplay4state] = useState("default");
   const [display5state, setDisplay5state] = useState("default");
 
-  async function getGuess() {
-    if (display5 !== "") {
-      const guess = display1 + display2 + display3 + display4 + display5;
+
+  
+  async function getGuess(currentRowArray) {
+    console.log("current row array ", currentRowArray);
+    if (currentRowArray[4].value !== "") {
+      const guess = currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
       //console.log("important string!", guess);
       const isAllowedGuess = await checkDB(guess);
       if (isAllowedGuess.rowCount > 0) {
         let solutionarray = currentGame.solution.split("");
         // MY CHANGES START HERE (EDUARDO)
 
-        let guessarray = [display1.toLowerCase(), display2.toLowerCase(), display3.toLowerCase(), display4.toLowerCase(), display5.toLowerCase()]; // new from here
+        let guessarray = [currentRowArray[0].value.toLowerCase(), currentRowArray[1].value.toLowerCase(), currentRowArray[2].value.toLowerCase(), currentRowArray[3].value.toLowerCase(), currentRowArray[4].value.toLowerCase()]; // new from here
         let resultarray = new Array(5); // array of 5x5
 
         for (let i = 0; i < solutionarray.length; i++) {
@@ -85,19 +120,9 @@ export default function GameContextProvider({ children }) {
         const sumMatrix = columnSums.map((element, index) => element + diagonalResults[index]);
 
         console.log(sumMatrix);
-        [0, 0, 0, 0, 0];
-        function changeColours() {
-          // if (sumMatrix[0] === 0) {
-          //   console.log(setDisplay1state("grey"));
-          // } else if (sumMatrix[0] === 1) {
-          //   console.log(setDisplay1state("yellow"));
-          // } else if (sumMatrix[0] === 2) {
-          //   console.log(setDisplay1state("green"));
-          // }
 
-          // sumMatrix.forEach((element, index) => {
-          //   console.log(element, index);
-          // });
+        function changeColours() {
+
 
           sumMatrix.forEach((element, index) => {
             if (element === 0) {
@@ -149,6 +174,7 @@ export default function GameContextProvider({ children }) {
         copyCurrentGame.user_id = gameValues.user_id;
         copyCurrentGame.game_start_time = gameValues.game_start_time;
         copyCurrentGame.solution = gameValues.solution;
+        copyCurrentGame.current_guess = gameValues.current_guess;
         updateCurrentGame(copyCurrentGame);
       }
     }
@@ -159,17 +185,27 @@ export default function GameContextProvider({ children }) {
   }
 
   function typeInLine(key) {
-    if (display1 === "") {
-      setDisplay1(key);
-    } else if (display1 !== "" && display2 === "") {
-      setDisplay2(key);
-    } else if (display1 !== "" && display2 !== "" && display3 === "") {
-      setDisplay3(key);
-    } else if (display1 !== "" && display2 !== "" && display3 !== "" && display4 === "") {
-      setDisplay4(key);
-    } else if (display1 !== "" && display2 !== "" && display3 !== "" && display4 !== "" && display5 === "") {
-      setDisplay5(key);
+    const copyRow = [...eval(`row${currentRow}`) ];
+    if (eval(`row${currentRow}[0].value === "" `)) {
+      //setDisplay1(key);
+      console.log("inside first index ");
+      copyRow[0].value = key;
+      
+    } else if (rowOne[0].value !== "" && rowOne[1].value === "") {
+      //setcopyRow[0].value(key);
+      copyRow[1].value = key;
+    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value === "") {
+      //setcopyRow[0].value(key);
+      copyRow[2].value = key;
+    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value === "") {
+      //setcopyRow[0].value(key);
+      copyRow[3].value = key;
+    } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value !== "" && copyRow[3].value !== "" && copyRow[4].value === "") {
+      //setDisplay5(key);
+      copyRow[4].value = key;
     }
+    console.log("Now copy row is", copyRow);
+    eval(`setRow${currentRow}(copyRow);`)
   }
 
   function deleteLetter() {
@@ -204,6 +240,12 @@ export default function GameContextProvider({ children }) {
         display3state,
         display4state,
         display5state,
+        row1,
+        rowTwo,
+        rowThree,
+        rowFour,
+        rowFive,
+        rowSix,
         runToast,
       }}
     >
