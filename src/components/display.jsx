@@ -14,13 +14,21 @@ export default function Display() {
   let { display4state } = useGameContext();
   let { display5state } = useGameContext();
 
+  let { rowOne } = useGameContext();
+
   return (
     <div id="line">
-      <p className={`display-box ${display1state}`}>{display1}</p>
+      {/* <p className={`display-box ${display1state}`}>{display1}</p>
       <p className={`display-box ${display2state}`}>{display2}</p>
       <p className={`display-box ${display3state}`}>{display3}</p>
       <p className={`display-box ${display4state}`}>{display4}</p>
-      <p className={`display-box ${display5state}`}>{display5}</p>
+      <p className={`display-box ${display5state}`}>{display5}</p> */}
+      {rowOne.map((object) => { return (
+          <div key={object.value + object.class}>
+            <p className={`display-box ${object.class}`}>{object.value}</p>
+          </div>
+        )
+        })}
     </div>
   );
 }
