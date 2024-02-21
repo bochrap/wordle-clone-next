@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useState, useContext, useEffect } from "react";
-import { checkDB, getTheWord, createGame, checkGame } from "@/lib/checkDB";
+import { checkDB, getTheWord, createGame, checkGame, gameEndQuery } from "@/lib/checkDB";
 import { getUserId } from "@/lib/users";
 import toast from "react-hot-toast";
 
@@ -25,52 +25,60 @@ export default function GameContextProvider({ children }) {
     score: null,
   };
 
-const displayObject = {
+  const displayObject = {
     value: "",
     class: "default",
-  }
+  };
   // const rowArray = [
   //   ...displayObject, ...displayObject, ...displayObject, ...displayObject, ...displayObject
-  // ];  
+  // ];
 
   const [currentGame, setCurrentGame] = useState(currentGameObject);
   const [currentRow, setCurrentRow] = useState(1);
 
-  const [ row1, setRow1] = useState([
+  const [row1, setRow1] = useState([
     {
-    value: "",
-    class: "default",
-  }, {
-    value: "",
-    class: "default",
-  }, {
-    value: "",
-    class: "default",
-  }, {
-    value: "",
-    class: "default",
-  }, {
-    value: "",
-    class: "default",
-  }
+      value: "",
+      class: "default",
+    },
+    {
+      value: "",
+      class: "default",
+    },
+    {
+      value: "",
+      class: "default",
+    },
+    {
+      value: "",
+      class: "default",
+    },
+    {
+      value: "",
+      class: "default",
+    },
   ]);
-  const [ row2, setRow2] = useState([
+  const [row2, setRow2] = useState([
     {
-    value: "",
-    class: "default",
-  }, {
-    value: "",
-    class: "default",
-  }, {
-    value: "",
-    class: "default",
-  }, {
-    value: "",
-    class: "default",
-  }, {
-    value: "",
-    class: "default",
-  }
+      value: "",
+      class: "default",
+    },
+    {
+      value: "",
+      class: "default",
+    },
+    {
+      value: "",
+      class: "default",
+    },
+    {
+      value: "",
+      class: "default",
+    },
+    {
+      value: "",
+      class: "default",
+    },
   ]);
   // const [ rowThree, setRowThree] = useState(rowArray);
   // const [ rowFour, setRowFour] = useState(rowArray);
@@ -89,6 +97,9 @@ const displayObject = {
   const [display4state, setDisplay4state] = useState("default");
   const [display5state, setDisplay5state] = useState("default");
 
+  function endCurrentGame() {
+    gameEndQuery(currentGame);
+  }
 
   function changeColours(sumMatrix) {
     const copyRow = [...eval(`row${currentRow}`)];
@@ -105,19 +116,26 @@ const displayObject = {
         console.log(index, "green");
       }
     });
-    eval(`setRow${currentRow}(copyRow);`)
+    eval(`setRow${currentRow}(copyRow);`);
   }
-  
+
   async function getGuess() {
     const currentRowArray = eval(`row${currentRow}`);
     if (currentRowArray[4].value !== "") {
-      const guess = currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
+      const guess =
+        currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
       const isAllowedGuess = await checkDB(guess);
       if (isAllowedGuess.rowCount > 0) {
         let solutionarray = currentGame.solution.split("");
         // MY CHANGES START HERE (EDUARDO)
 
-        let guessarray = [currentRowArray[0].value.toLowerCase(), currentRowArray[1].value.toLowerCase(), currentRowArray[2].value.toLowerCase(), currentRowArray[3].value.toLowerCase(), currentRowArray[4].value.toLowerCase()]; // new from here
+        let guessarray = [
+          currentRowArray[0].value.toLowerCase(),
+          currentRowArray[1].value.toLowerCase(),
+          currentRowArray[2].value.toLowerCase(),
+          currentRowArray[3].value.toLowerCase(),
+          currentRowArray[4].value.toLowerCase(),
+        ]; // new from here
         let resultarray = new Array(5); // array of 5x5
 
         for (let i = 0; i < solutionarray.length; i++) {
@@ -148,16 +166,20 @@ const displayObject = {
         const sumMatrix = columnSums.map((element, index) => element + diagonalResults[index]);
 
         changeColours(sumMatrix);
-        setCurrentRow(2);
+
+        if (sumMatrix[0] === 2 && sumMatrix[1] === 2 && sumMatrix[2] === 2 && sumMatrix[3] === 2 && sumMatrix[4] === 2) {
+          endCurrentGame();
+        }
+        // setCurrentRow(2);
+
+        function updateGameTable() {}
+
         // THIS IS THE END OF MY CHANGES (EDUARDO)
-
       } else {
-        console.log("Not a valid word");
+        runToast("NOT A VALID GUESS");
       }
-
     } else {
-      // getTheWord();
-      runToast("BAD BOY");
+      runToast("TYPE 5 LETTER WORD");
     }
   }
 
@@ -191,13 +213,12 @@ const displayObject = {
   }
 
   function typeInLine(key) {
-    const copyRow = [...eval(`row${currentRow}`) ];
-    if (copyRow[0].value === "" ) {
+    const copyRow = [...eval(`row${currentRow}`)];
+    if (copyRow[0].value === "") {
       //setDisplay1(key);
       console.log("inside first index ");
       copyRow[0].value = key;
-      
-    } else if (copyRow[0].value !== "" && copyRow[1].value === "" ) {
+    } else if (copyRow[0].value !== "" && copyRow[1].value === "") {
       //setcopyRow[0].value(key);
       copyRow[1].value = key;
     } else if (copyRow[0].value !== "" && copyRow[1].value !== "" && copyRow[2].value === "") {
@@ -210,11 +231,11 @@ const displayObject = {
       //setDisplay5(key);
       copyRow[4].value = key;
     }
-    eval(`setRow${currentRow}(copyRow);`)
+    eval(`setRow${currentRow}(copyRow);`);
   }
 
   function deleteLetter() {
-    const copyRow = [...eval(`row${currentRow}`) ];
+    const copyRow = [...eval(`row${currentRow}`)];
     if (copyRow[4].value !== "") {
       copyRow[4].value = "";
     } else if (copyRow[4].value === "" && copyRow[3].value !== "") {
@@ -226,7 +247,7 @@ const displayObject = {
     } else if (copyRow[4].value === "" && copyRow[3].value === "" && copyRow[2].value === "" && copyRow[1].value === "" && copyRow[0].value !== "") {
       copyRow[0].value = "";
     }
-    eval(`setRow${currentRow}(copyRow);`)
+    eval(`setRow${currentRow}(copyRow);`);
   }
 
   return (

@@ -36,3 +36,8 @@ export async function checkGame(userId) {
     return game;
   }
 }
+
+export async function gameEndQuery(currentGame) {
+  const submit =
+    await sql`UPDATE games SET islivegame='FALSE', game_end_time=CURRENT_TIMESTAMP, success=${currentGame.success} WHERE id=${currentGame.id}`;
+}
