@@ -46,7 +46,8 @@ const currentGameObject = {
   guess5: null,
   guess6: null,
   duration: null,
-  success: null,
+  success: false,
+  finished: false,
   current_guess: 1,
   score: null,
 };
@@ -69,8 +70,12 @@ export default function GameContextProvider({ children }) {
   const [row5, setRow5] = useState(JSON.parse(JSON.stringify(initialState)));
   const [row6, setRow6] = useState(JSON.parse(JSON.stringify(initialState)));
 
-  function endCurrentGame() {
-    gameEndQuery(currentGame);
+  function endCurrentGame(result) {
+    const copyCurrentGame = {...currentGame}
+    copyCurrentGame.finished = true;
+    copyCurrentGame.success = result;
+    updateCurrentGame(copyCurrentGame);
+    gameEndQuery(copyCurrentGame);
   }
 
   function changeColours(sumMatrix, row) {
@@ -174,12 +179,13 @@ export default function GameContextProvider({ children }) {
         changeColours(matrix[0], currentRow);
 
         if (matrix[0][0] === 2 && matrix[0][1] === 2 && matrix[0][2] === 2 && matrix[0][3] === 2 && matrix[0][4] === 2) {
-          // endCurrentGame();
+          endCurrentGame(true);
           runToast("Game end triggered");
         } else {
           disableKeys(matrix[0], matrix[1]);
           if (currentRow === 6) {
             runToast("End game triggered (failed guess)");
+            endCurrentGame(false);
           } else {
             runToast(`${guess.toLowerCase()} added to current game obj`);
             setCurrentRow(currentRow + 1);
@@ -213,7 +219,6 @@ export default function GameContextProvider({ children }) {
         copyCurrentGame.game_start_time = gameValues.game_start_time;
         copyCurrentGame.solution = gameValues.solution;
         copyCurrentGame.current_guess = gameValues.current_guess;
-        updateCurrentGame(copyCurrentGame);
         for (let i = 1; i <= gameValues.current_guess; i++) {
           eval(`copyCurrentGame.guess${i} = gameValues.guess${i}`);
           let guess = "";
@@ -232,13 +237,11 @@ export default function GameContextProvider({ children }) {
   }
 
   function populateRows(row, guess, solution) {
-    console.log("i have been called", row, guess);
     const copyRow = [...eval(`row${row}`)];
     for (let i = 0; i < 5; i++) {
       copyRow[i].value = guess.charAt(i);
     }
     copyRow.value = guess;
-    console.log(copyRow);
     eval(`setRow${row}(copyRow);`);
     const currentRowArray = eval(`row${row}`);
     const matrix = matrixValidation(currentRowArray, solution);

@@ -10,16 +10,12 @@ export default function ModalUnstyled() {
   const { currentGame } = useGameContext();
   //   const [open, setOpen] = React.useState(false);
   //   const handleOpen = () => setOpen(true);
-  let open = false;
-  if (currentGame.id === 5) {
-    open = true;
-  }
+  let open = currentGame.finished;
 
   //   const handleClose = () => setOpen(true);
 
   return (
     <div>
-      <TriggerButton type="button">Game summary</TriggerButton>
       <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
