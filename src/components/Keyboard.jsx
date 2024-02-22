@@ -6,7 +6,6 @@ import toast, { Toaster } from "react-hot-toast";
 /* ----- Project Imports ----- */
 import { useGameContext } from "@/context/game-context";
 import "./Keyboard.css";
-import ModalUnstyled from "./Modal";
 
 export default function Keyboard() {
   const { typeInLine, getGuess, deleteLetter, runToast, disabledButtons } = useGameContext();
@@ -33,7 +32,6 @@ export default function Keyboard() {
     <div id="keyboard-container">
       <Toaster />
       <div className="keys-row">
-        <ModalUnstyled />
         {firstRow.map((key, index) => (
           <button
             key={key}

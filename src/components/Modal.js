@@ -8,15 +8,18 @@ import { useGameContext } from "@/context/game-context";
 
 export default function ModalUnstyled() {
   const { currentGame } = useGameContext();
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  //   const [open, setOpen] = React.useState(false);
+  //   const handleOpen = () => setOpen(true);
+  let open = false;
+  if (currentGame.id === 5) {
+    open = true;
+  }
+
   //   const handleClose = () => setOpen(true);
 
   return (
     <div>
-      <TriggerButton type="button" onClick={handleOpen}>
-        Open modal
-      </TriggerButton>
+      <TriggerButton type="button">Game summary</TriggerButton>
       <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
