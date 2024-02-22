@@ -197,9 +197,28 @@ export default function GameContextProvider({ children }) {
         copyCurrentGame.game_start_time = gameValues.game_start_time;
         copyCurrentGame.solution = gameValues.solution;
         copyCurrentGame.current_guess = gameValues.current_guess;
+        for (let i = 1; i <= gameValues.current_guess; i++) {
+          eval(`copyCurrentGame.guess${i} = gameValues.guess${i}`);
+          setCurrentRow(i + 1);
+          let guess = "";
+          eval(`guess = gameValues.guess${i}`);
+          populateRows(i, guess);
+          
+        }
         updateCurrentGame(copyCurrentGame);
       }
     }
+  }
+
+  function populateRows(row, guess) {
+    console.log("i have been called", row, guess);
+    const copyRow = [...eval(`row${row}`)];
+    for (let i = 0; i < 5; i++) {
+      copyRow[i].value = guess.charAt(i);
+    }
+    copyRow.value = guess;
+    console.log(copyRow);
+    eval(`setRow${row}(copyRow);`);
   }
 
   function updateCurrentGame(copiedObject) {
