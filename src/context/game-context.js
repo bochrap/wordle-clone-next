@@ -146,7 +146,7 @@ export default function GameContextProvider({ children }) {
           sumMatrix.forEach((item, index) => {
             if (item === 0) {
               // setDisabledButtons(disabledButtons.push(guessarray[index]));
-              setDisabledButtons((prevButtons) => [...prevButtons, guessarray[index]]);
+              setDisabledButtons((prevButtons) => [...prevButtons, guessarray[index].toUpperCase()]);
             }
             runToast(disabledButtons);
           });
