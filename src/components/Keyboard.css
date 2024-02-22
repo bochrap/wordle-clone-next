@@ -11,7 +11,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  height: 43vh;
+  height: 8vh;
 }
 
 .disabled {
@@ -34,7 +34,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
 }
 
 .keys-row {
