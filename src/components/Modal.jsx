@@ -38,7 +38,7 @@ export default function ModalUnstyled() {
           <p id="unstyled-modal-description" className="modal-description">
             Aliquid amet deserunt earum!
           </p>
-          <button>PLAY AGAIN</button>
+          <button onClick={refreshPage}>PLAY AGAIN</button>
         </ModalContent>
       </Modal>
     </div>
