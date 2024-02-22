@@ -57,6 +57,11 @@ export default function GameContextProvider({ children }) {
 
   const [disabledButtons, setDisabledButtons] = useState([]);
 
+  /*
+           _   
+       .__(.)< (MEOW)
+        \___)
+  ~~~~~~~~~~~~~~~~~~ */
   const [row1, setRow1] = useState(JSON.parse(JSON.stringify(initialState)));
   const [row2, setRow2] = useState(JSON.parse(JSON.stringify(initialState)));
   const [row3, setRow3] = useState(JSON.parse(JSON.stringify(initialState)));
@@ -110,6 +115,17 @@ export default function GameContextProvider({ children }) {
       if (isAllowedGuess.rowCount > 0) {
 
         updateGuesses(guess);
+
+        /*
+                  _   
+              .__(.)< (Eduardo NO!)
+              \___)
+        ~~~~~~~~~~~~~~~~~~ 
+                              _   
+        (Matrix Good!)      >(.)__.
+                              (___/
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
         let solutionarray = currentGame.solution.split("");
 
         let guessarray = [
