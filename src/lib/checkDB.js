@@ -13,6 +13,13 @@ export async function checkDB(guess) {
   }
 }
 
+export async function updateDatabaseGuess(id, guess, row) {
+  const guessQuery = `UPDATE games SET guess${row}='${guess}', current_guess=${row} WHERE id=${id};`;
+  console.log("query is ", guessQuery);
+  //const submit = await sql`UPDATE games SET guess${row}=${guess} WHERE id=${id}`;
+  const insert = await sql.query(guessQuery);
+}
+
 export async function getTheWord() {
   // number of solutions: 2315
   // NUMBER OF SOLUTIONS = await sql`SELECT COUNT(*) FROM words WHERE issolution='TRUE'`;
