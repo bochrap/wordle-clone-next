@@ -4,11 +4,13 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import { styled, css } from "@mui/system";
 import { Modal as BaseModal } from "@mui/base/Modal";
+import { useGameContext } from "@/context/game-context";
 
 export default function ModalUnstyled() {
+  const { currentGame } = useGameContext();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  //   const handleClose = () => setOpen(true);
 
   return (
     <div>
@@ -19,16 +21,18 @@ export default function ModalUnstyled() {
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
         open={open}
-        onClose={handleClose}
+        // onClose={handleClose}
         slots={{ backdrop: StyledBackdrop }}
       >
         <ModalContent sx={{ width: 400 }}>
           <h2 id="unstyled-modal-title" className="modal-title">
-            Text in a modal
+            Game ended
           </h2>
+          <p>{currentGame.id}</p>
           <p id="unstyled-modal-description" className="modal-description">
             Aliquid amet deserunt earum!
           </p>
+          <button>PLAY AGAIN</button>
         </ModalContent>
       </Modal>
     </div>
