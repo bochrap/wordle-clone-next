@@ -73,8 +73,8 @@ export default function GameContextProvider({ children }) {
     gameEndQuery(currentGame);
   }
 
-  function changeColours(sumMatrix) {
-    const copyRow = [...eval(`row${currentRow}`)];
+  function changeColours(sumMatrix, row) {
+    const copyRow = [...eval(`row${row}`)];
     sumMatrix.forEach((element, index) => {
       if (element === 0) {
         copyRow[index].class = "grey";
@@ -84,7 +84,7 @@ export default function GameContextProvider({ children }) {
         copyRow[index].class = "green";
       }
     });
-    eval(`setRow${currentRow}(copyRow);`);
+    eval(`setRow${row}(copyRow);`);
   }
 
   function disableKeys(myArray, guessarray) {
@@ -99,24 +99,15 @@ export default function GameContextProvider({ children }) {
 
   async function updateGuesses(guess) {
     //Update Game object first
-    const copyGame = {...currentGame };
+    const copyGame = { ...currentGame };
     const newGuess = eval(`copyGame.guess${currentRow} = guess`);
     updateCurrentGame(copyGame);
     //Update Database
     updateDatabaseGuess(currentGame.id, guess, currentRow);
   }
 
-  async function getGuess() {
-    console.log("game Object now ", currentGame);
-    const currentRowArray = eval(`row${currentRow}`);
-    if (currentRowArray[4].value !== "") {
-      const guess = currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
-      const isAllowedGuess = await checkDB(guess);
-      if (isAllowedGuess.rowCount > 0) {
-
-        updateGuesses(guess);
-
-        /*
+  function matrixValidation(currentRowArray, solution) {
+    /*
                   _   
               .__(.)< (Eduardo NO!)
               \___)
@@ -126,69 +117,78 @@ export default function GameContextProvider({ children }) {
                               (___/
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-        let solutionarray = currentGame.solution.split("");
+    let solutionarray = solution.split("");
 
-        let guessarray = [
-          currentRowArray[0].value.toLowerCase(),
-          currentRowArray[1].value.toLowerCase(),
-          currentRowArray[2].value.toLowerCase(),
-          currentRowArray[3].value.toLowerCase(),
-          currentRowArray[4].value.toLowerCase(),
-        ]; // new from here
-        let resultarray = new Array(5); // array of 5x5
+    let guessarray = [
+      currentRowArray[0].value.toLowerCase(),
+      currentRowArray[1].value.toLowerCase(),
+      currentRowArray[2].value.toLowerCase(),
+      currentRowArray[3].value.toLowerCase(),
+      currentRowArray[4].value.toLowerCase(),
+    ]; // new from here
+    let resultarray = new Array(5); // array of 5x5
 
-        for (let i = 0; i < solutionarray.length; i++) {
-          resultarray[i] = new Array(5); // Initialize each row of the matrix
-          for (let j = 0; j < guessarray.length; j++) {
-            // Compare elements and store the result in the comparison matrix
-            resultarray[i][j] = solutionarray[i] === guessarray[j];
-          }
-        }
-        // Log the comparison matrix to the console
+    for (let i = 0; i < solutionarray.length; i++) {
+      resultarray[i] = new Array(5); // Initialize each row of the matrix
+      for (let j = 0; j < guessarray.length; j++) {
+        // Compare elements and store the result in the comparison matrix
+        resultarray[i][j] = solutionarray[i] === guessarray[j];
+      }
+    }
+    // Log the comparison matrix to the console
 
-        // Initialize an array INLINE to store the sum of each column (check if "good")
-        let columnSums = new Array(resultarray.length).fill(0);
+    // Initialize an array INLINE to store the sum of each column (check if "good")
+    let columnSums = new Array(resultarray.length).fill(0);
 
-        // Sum values in each column
-        for (let j = 0; j < resultarray.length; j++) {
-          // Iterate columns
-          for (let i = 0; i < resultarray.length; i++) {
-            // Iterate rows
-            columnSums[j] += resultarray[i][j] ? 1 : 0; // Add 1 if true, 0 otherwise
-          }
-        }
+    // Sum values in each column
+    for (let j = 0; j < resultarray.length; j++) {
+      // Iterate columns
+      for (let i = 0; i < resultarray.length; i++) {
+        // Iterate rows
+        columnSums[j] += resultarray[i][j] ? 1 : 0; // Add 1 if true, 0 otherwise
+      }
+    }
 
-        // Map results of i = j (main diagonal)(check if "perfect")
-        const diagonalResults = resultarray.map((row, i) => row[i]);
+    // Map results of i = j (main diagonal)(check if "perfect")
+    const diagonalResults = resultarray.map((row, i) => row[i]);
 
-        // Sum the two matrices
-        const sumMatrix = columnSums.map((element, index) => element + diagonalResults[index]);
+    // Sum the two matrices
+    const sumMatrix = columnSums.map((element, index) => element + diagonalResults[index]);
+    return [sumMatrix, guessarray];
+  }
 
-        //Function that changes the class values in the row - used by Display Component. 
-        changeColours(sumMatrix);
+  async function getGuess() {
+    console.log("game Object now ", currentGame);
+    const currentRowArray = eval(`row${currentRow}`);
+    if (currentRowArray[4].value !== "") {
+      const guess =
+        currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
+      const isAllowedGuess = await checkDB(guess);
+      if (isAllowedGuess.rowCount > 0) {
+        updateGuesses(guess);
 
-        if (sumMatrix[0] === 2 && sumMatrix[1] === 2 && sumMatrix[2] === 2 && sumMatrix[3] === 2 && sumMatrix[4] === 2) {
+        const matrix = matrixValidation(currentRowArray, currentGame.solution);
+
+        //Function that changes the class values in the row - used by Display Component
+
+        changeColours(matrix[0], currentRow);
+
+        if (matrix[0][0] === 2 && matrix[0][1] === 2 && matrix[0][2] === 2 && matrix[0][3] === 2 && matrix[0][4] === 2) {
           // endCurrentGame();
           runToast("Game end triggered");
-        } 
-        else {
-          disableKeys(sumMatrix, guessarray);
+        } else {
+          disableKeys(matrix[0], matrix[1]);
           if (currentRow === 6) {
             runToast("End game triggered (failed guess)");
-          } 
-          else {
+          } else {
             runToast(`${guess.toLowerCase()} added to current game obj`);
             setCurrentRow(currentRow + 1);
           }
         }
-
-        function updateGameTable() {}
-      } 
-      else {
+      } else {
         runToast("NOT A VALID GUESS");
       }
-    } 
-    else {
+    } else {
       runToast("TYPE 5 LETTER WORD");
     }
   }
@@ -213,20 +213,25 @@ export default function GameContextProvider({ children }) {
         copyCurrentGame.game_start_time = gameValues.game_start_time;
         copyCurrentGame.solution = gameValues.solution;
         copyCurrentGame.current_guess = gameValues.current_guess;
+        updateCurrentGame(copyCurrentGame);
         for (let i = 1; i <= gameValues.current_guess; i++) {
           eval(`copyCurrentGame.guess${i} = gameValues.guess${i}`);
-          setCurrentRow(i + 1);
           let guess = "";
           eval(`guess = gameValues.guess${i}`);
-          populateRows(i, guess);
-          
+
+          if (guess) {
+            setCurrentRow(i + 1);
+            populateRows(i, guess, copyCurrentGame.solution);
+          } else {
+            setCurrentRow(i);
+          }
         }
         updateCurrentGame(copyCurrentGame);
       }
     }
   }
 
-  function populateRows(row, guess) {
+  function populateRows(row, guess, solution) {
     console.log("i have been called", row, guess);
     const copyRow = [...eval(`row${row}`)];
     for (let i = 0; i < 5; i++) {
@@ -235,6 +240,9 @@ export default function GameContextProvider({ children }) {
     copyRow.value = guess;
     console.log(copyRow);
     eval(`setRow${row}(copyRow);`);
+    const currentRowArray = eval(`row${row}`);
+    const matrix = matrixValidation(currentRowArray, solution);
+    changeColours(matrix[0], row);
   }
 
   function updateCurrentGame(copiedObject) {
