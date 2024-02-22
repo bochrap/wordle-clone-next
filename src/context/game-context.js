@@ -102,13 +102,13 @@ export default function GameContextProvider({ children }) {
     });
   }
 
-  async function updateGuesses(guess) {
+  async function updateGuesses(guess, user) {
     //Update Game object first
     const copyGame = { ...currentGame };
     const newGuess = eval(`copyGame.guess${currentRow} = guess`);
     updateCurrentGame(copyGame);
     //Update Database
-    updateDatabaseGuess(currentGame.id, guess, currentRow);
+    updateDatabaseGuess(copyGame.id, guess, currentRow);
   }
 
   function matrixValidation(currentRowArray, solution) {
@@ -184,7 +184,7 @@ export default function GameContextProvider({ children }) {
         currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
       const isAllowedGuess = await checkDB(guess);
       if (isAllowedGuess.rowCount > 0) {
-        updateGuesses(guess);
+        updateGuesses(guess, currentGame.user_id);
 
         const matrix = matrixValidation(currentRowArray, currentGame.solution);
 
@@ -223,12 +223,10 @@ export default function GameContextProvider({ children }) {
     const isGame = await checkGame(user);
     if (!isGame) {
       const solution = await getTheWord();
-      createGame(solution, user);
-      copyCurrentGame.solution = solution
-      copyCurrentGame.user_id = user
-      const newgame = await checkGame(user)
-      console.log ("newgame", newgame)
-      copyCurrentGame.id = newgame.id
+      const id = await createGame(solution, user);
+      copyCurrentGame.solution = solution;
+      copyCurrentGame.user_id = user;
+      copyCurrentGame.id = id;
     } else {
       let gameValues = {};
       if (isGame.rows[0]) {

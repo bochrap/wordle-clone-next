@@ -30,8 +30,9 @@ export async function getTheWord() {
 }
 
 export async function createGame(solution, user) {
-  const newgame = await sql`INSERT INTO games (user_id, game_start_time, solution) VALUES (${user}, CURRENT_TIMESTAMP, ${solution})`;
+  const newgame = await sql`INSERT INTO games (user_id, game_start_time, solution) VALUES (${user}, CURRENT_TIMESTAMP, ${solution}) RETURNING id`;
   console.log(newgame)
+  return newgame.rows[0].id;
 }
 
 export async function checkGame(userId) {
