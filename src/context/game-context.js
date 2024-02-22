@@ -106,7 +106,7 @@ export default function GameContextProvider({ children }) {
     updateDatabaseGuess(currentGame.id, guess, currentRow);
   }
 
-  function matrixValidation(currentRowArray) {
+  function matrixValidation(currentRowArray, solution) {
     /*
                   _   
               .__(.)< (Eduardo NO!)
@@ -117,7 +117,7 @@ export default function GameContextProvider({ children }) {
                               (___/
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-    let solutionarray = currentGame.solution.split("");
+    let solutionarray = solution.split("");
 
     let guessarray = [
       currentRowArray[0].value.toLowerCase(),
@@ -167,7 +167,7 @@ export default function GameContextProvider({ children }) {
       if (isAllowedGuess.rowCount > 0) {
         updateGuesses(guess);
 
-        const matrix = matrixValidation(currentRowArray);
+        const matrix = matrixValidation(currentRowArray, currentGame.solution);
 
         //Function that changes the class values in the row - used by Display Component
 
@@ -221,7 +221,7 @@ export default function GameContextProvider({ children }) {
 
           if (guess) {
             setCurrentRow(i + 1);
-            populateRows(i, guess);
+            populateRows(i, guess, copyCurrentGame.solution);
           } else {
             setCurrentRow(i);
           }
@@ -231,7 +231,7 @@ export default function GameContextProvider({ children }) {
     }
   }
 
-  function populateRows(row, guess) {
+  function populateRows(row, guess, solution) {
     console.log("i have been called", row, guess);
     const copyRow = [...eval(`row${row}`)];
     for (let i = 0; i < 5; i++) {
@@ -241,7 +241,7 @@ export default function GameContextProvider({ children }) {
     console.log(copyRow);
     eval(`setRow${row}(copyRow);`);
     const currentRowArray = eval(`row${row}`);
-    const matrix = matrixValidation(currentRowArray);
+    const matrix = matrixValidation(currentRowArray, solution);
     changeColours(matrix[0], row);
   }
 
