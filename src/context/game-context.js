@@ -39,12 +39,12 @@ const currentGameObject = {
   game_start_time: null,
   game_end_time: null,
   solution: null,
-  guess_one: null,
-  guess_two: null,
-  guess_three: null,
-  guess_four: null,
-  guess_five: null,
-  guess_six: null,
+  guess1: null,
+  guess2: null,
+  guess3: null,
+  guess4: null,
+  guess5: null,
+  guess6: null,
   duration: null,
   success: null,
   current_guess: 1,
@@ -82,13 +82,33 @@ export default function GameContextProvider({ children }) {
     eval(`setRow${currentRow}(copyRow);`);
   }
 
+  function disableKeys(sumMatrix) {
+    sumMatrix.forEach((item, index) => {
+      if (item === 0) {
+        // setDisabledButtons(disabledButtons.push(guessarray[index]));
+        setDisabledButtons((prevButtons) => [...prevButtons, guessarray[index].toUpperCase()]);
+      }
+      //runToast(disabledButtons);
+    });
+  }
+
+  async function updateGuesses(guess) {
+    //Update Game object first
+    const copyGame = [...currentGame ];
+    const newGuess = eval(`copyGame.guess${currentRow} = guess`);
+    updateCurrentGame(copyGame);
+  }
+
   async function getGuess() {
+    console.log("game Object now ", currentGame);
     const currentRowArray = eval(`row${currentRow}`);
     if (currentRowArray[4].value !== "") {
       const guess =
         currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
       const isAllowedGuess = await checkDB(guess);
       if (isAllowedGuess.rowCount > 0) {
+
+        updateGuesses(guess);
         let solutionarray = currentGame.solution.split("");
 
         let guessarray = [
@@ -127,36 +147,31 @@ export default function GameContextProvider({ children }) {
         // Sum the two matrices
         const sumMatrix = columnSums.map((element, index) => element + diagonalResults[index]);
 
+        //Function that changes the class values in the row - used by Display Component. 
         changeColours(sumMatrix);
 
         if (sumMatrix[0] === 2 && sumMatrix[1] === 2 && sumMatrix[2] === 2 && sumMatrix[3] === 2 && sumMatrix[4] === 2) {
           // endCurrentGame();
           runToast("Game end triggered");
-        } else {
-          disableKeys();
+        } 
+        else {
+          disableKeys(sumMatrix);
           if (currentRow === 6) {
             runToast("End game triggered (failed guess)");
-          } else {
+          } 
+          else {
             runToast(`${guess.toLowerCase()} added to current game obj`);
             setCurrentRow(currentRow + 1);
           }
         }
 
-        function disableKeys() {
-          sumMatrix.forEach((item, index) => {
-            if (item === 0) {
-              // setDisabledButtons(disabledButtons.push(guessarray[index]));
-              setDisabledButtons((prevButtons) => [...prevButtons, guessarray[index].toUpperCase()]);
-            }
-            runToast(disabledButtons);
-          });
-        }
-
         function updateGameTable() {}
-      } else {
+      } 
+      else {
         runToast("NOT A VALID GUESS");
       }
-    } else {
+    } 
+    else {
       runToast("TYPE 5 LETTER WORD");
     }
   }
