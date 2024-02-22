@@ -31,14 +31,15 @@ export async function getTheWord() {
 
 export async function createGame(solution, user) {
   const newgame = await sql`INSERT INTO games (user_id, game_start_time, solution) VALUES (${user}, CURRENT_TIMESTAMP, ${solution})`;
+  console.log(newgame)
 }
 
 export async function checkGame(userId) {
   const game = await sql`SELECT * FROM games WHERE user_id=${userId} AND isLiveGame='TRUE'`;
 
-  // console.log("game is ", game);
+  console.log("game is ", game);
   if (game.rowCount === 0) {
-    console.log("im zero rows ");
+    // console.log("im zero rows ");
     return false;
   } else {
     return game;

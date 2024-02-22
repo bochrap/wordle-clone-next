@@ -144,21 +144,35 @@ export default function GameContextProvider({ children }) {
 
     // Initialize an array INLINE to store the sum of each column (check if "good")
     let columnSums = new Array(resultarray.length).fill(0);
-
+    let average = new Array(resultarray.length).fill(0);
     // Sum values in each column
-    for (let j = 0; j < resultarray.length; j++) {
-      // Iterate columns
-      for (let i = 0; i < resultarray.length; i++) {
-        // Iterate rows
-        columnSums[j] += resultarray[i][j] ? 1 : 0; // Add 1 if true, 0 otherwise
-      }
-    }
+    
+    average [0] = Math.ceil((resultarray[0][0] + resultarray[1][0] + resultarray[2][0] + resultarray[3][0] + resultarray[4][0])/5)
+    average [1] = Math.ceil((resultarray[0][1] + resultarray[1][1] + resultarray[2][1] + resultarray[3][1] + resultarray[4][1])/5)
+    average [2] = Math.ceil((resultarray[0][2] + resultarray[1][2] + resultarray[2][2] + resultarray[3][2] + resultarray[4][2])/5)
+    average [3] = Math.ceil((resultarray[0][3] + resultarray[1][3] + resultarray[2][3] + resultarray[3][3] + resultarray[4][3])/5)
+    average [4] = Math.ceil((resultarray[0][4] + resultarray[1][4] + resultarray[2][4] + resultarray[3][4] + resultarray[4][4])/5)
+
+    console.log ("average", average)
+    columnSums = average
+    // for (let j = 0; j < resultarray.length; j++) {
+    //   // Iterate columns
+    //   for (let i = 0; i < resultarray.length; i++) {
+    //     // Iterate rows
+    //     columnSums[j] += resultarray[i][j] ? 1 : 0; // Add 1 if true, 0 otherwise
+    //   }
+    // }
 
     // Map results of i = j (main diagonal)(check if "perfect")
     const diagonalResults = resultarray.map((row, i) => row[i]);
 
+    
     // Sum the two matrices
     const sumMatrix = columnSums.map((element, index) => element + diagonalResults[index]);
+    console.log("resultarray", resultarray)
+    console.log("columnSums", columnSums)
+    console.log("diagonalResults", diagonalResults)
+    console.log("sumMatrix", sumMatrix)
     return [sumMatrix, guessarray];
   }
 
@@ -204,16 +218,21 @@ export default function GameContextProvider({ children }) {
   }
 
   async function startNewGame() {
+    const copyCurrentGame = { ...currentGameObject };
     const user = await getUserId();
     const isGame = await checkGame(user);
     if (!isGame) {
       const solution = await getTheWord();
       createGame(solution, user);
+      copyCurrentGame.solution = solution
+      copyCurrentGame.user_id = user
+      const newgame = await checkGame(user)
+      console.log ("newgame", newgame)
+      copyCurrentGame.id = newgame.id
     } else {
       let gameValues = {};
       if (isGame.rows[0]) {
         gameValues = isGame.rows[0];
-        const copyCurrentGame = { ...currentGameObject };
         copyCurrentGame.id = gameValues.id;
         copyCurrentGame.user_id = gameValues.user_id;
         copyCurrentGame.game_start_time = gameValues.game_start_time;
@@ -226,14 +245,15 @@ export default function GameContextProvider({ children }) {
 
           if (guess) {
             setCurrentRow(i + 1);
-            populateRows(i, guess, copyCurrentGame.solution);
+            populateRows(i, guess, gameValues.solution);
           } else {
             setCurrentRow(i);
           }
         }
-        updateCurrentGame(copyCurrentGame);
+        
       }
     }
+    updateCurrentGame(copyCurrentGame);
   }
 
   function populateRows(row, guess, solution) {
