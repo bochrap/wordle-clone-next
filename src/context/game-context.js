@@ -5,7 +5,7 @@ import { createContext, useState, useContext } from "react";
 import toast from "react-hot-toast";
 
 /* ----- Project Imports ----- */
-import { checkDB, getTheWord, createGame, checkGame, gameEndQuery } from "@/lib/checkDB";
+import { checkDB, getTheWord, createGame, checkGame, gameEndQuery, updateDatabaseGuess } from "@/lib/checkDB";
 import { getUserId } from "@/lib/users";
 
 const GameContext = createContext();
@@ -82,8 +82,8 @@ export default function GameContextProvider({ children }) {
     eval(`setRow${currentRow}(copyRow);`);
   }
 
-  function disableKeys(sumMatrix) {
-    sumMatrix.forEach((item, index) => {
+  function disableKeys(myArray, guessarray) {
+    myArray.forEach((item, index) => {
       if (item === 0) {
         // setDisabledButtons(disabledButtons.push(guessarray[index]));
         setDisabledButtons((prevButtons) => [...prevButtons, guessarray[index].toUpperCase()]);
@@ -94,17 +94,18 @@ export default function GameContextProvider({ children }) {
 
   async function updateGuesses(guess) {
     //Update Game object first
-    const copyGame = [...currentGame ];
+    const copyGame = {...currentGame };
     const newGuess = eval(`copyGame.guess${currentRow} = guess`);
     updateCurrentGame(copyGame);
+    //Update Database
+    updateDatabaseGuess(currentGame.id, guess, currentRow);
   }
 
   async function getGuess() {
     console.log("game Object now ", currentGame);
     const currentRowArray = eval(`row${currentRow}`);
     if (currentRowArray[4].value !== "") {
-      const guess =
-        currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
+      const guess = currentRowArray[0].value + currentRowArray[1].value + currentRowArray[2].value + currentRowArray[3].value + currentRowArray[4].value;
       const isAllowedGuess = await checkDB(guess);
       if (isAllowedGuess.rowCount > 0) {
 
@@ -155,7 +156,7 @@ export default function GameContextProvider({ children }) {
           runToast("Game end triggered");
         } 
         else {
-          disableKeys(sumMatrix);
+          disableKeys(sumMatrix, guessarray);
           if (currentRow === 6) {
             runToast("End game triggered (failed guess)");
           } 
