@@ -242,6 +242,7 @@ export default function GameContextProvider({ children }) {
     eval(`setRow${row}(copyRow);`);
     const currentRowArray = eval(`row${row}`);
     const matrix = matrixValidation(currentRowArray, solution);
+    disableKeys(matrix[0], matrix[1]);
     changeColours(matrix[0], row);
   }
 
