@@ -15,7 +15,10 @@ export default function ModalUnstyled() {
   //   const [open, setOpen] = React.useState(false);
   //   const handleOpen = () => setOpen(true);
   let open = currentGame.finished;
-
+  
+  function refreshPage(){ 
+    window.location.reload(); 
+}
   //   const handleClose = () => setOpen(true);
 
   return (
@@ -31,8 +34,10 @@ export default function ModalUnstyled() {
           <h2 id="unstyled-modal-title" className="modal-title">
             Thanks for Playing!
           </h2>
-          {currentGame.success && <p className="modal-description">You Found the Word</p>}
-          {!currentGame.success && <p className="modal-description">You didn't find the word</p>}
+          <p>{currentGame.id}</p>
+          <p id="unstyled-modal-description" className="modal-description">
+            Aliquid amet deserunt earum!
+          </p>
           <button>PLAY AGAIN</button>
         </ModalContent>
       </Modal>
