@@ -1,9 +1,13 @@
 "use client";
+
+/* ----- Third Party Imports ----- */
 import * as React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { styled, css } from "@mui/system";
 import { Modal as BaseModal } from "@mui/base/Modal";
+
+/* ----- Project Imports ----- */
 import { useGameContext } from "@/context/game-context";
 
 export default function ModalUnstyled() {
@@ -28,13 +32,13 @@ export default function ModalUnstyled() {
       >
         <ModalContent sx={{ width: 400 }}>
           <h2 id="unstyled-modal-title" className="modal-title">
-            Game ended
+            Thanks for Playing!
           </h2>
           <p>{currentGame.id}</p>
           <p id="unstyled-modal-description" className="modal-description">
             Aliquid amet deserunt earum!
           </p>
-          <button onClick={refreshPage}>PLAY AGAIN</button>
+          <button>PLAY AGAIN</button>
         </ModalContent>
       </Modal>
     </div>
