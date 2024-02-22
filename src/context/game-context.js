@@ -227,9 +227,6 @@ export default function GameContextProvider({ children }) {
           }
         }
         updateCurrentGame(copyCurrentGame);
-        const currentRowArray = eval(`row${row}`);
-        const matrix = matrixValidation(currentRowArray);
-        changeColours(matrix[0], row);
       }
     }
   }
@@ -243,6 +240,9 @@ export default function GameContextProvider({ children }) {
     copyRow.value = guess;
     console.log(copyRow);
     eval(`setRow${row}(copyRow);`);
+    const currentRowArray = eval(`row${row}`);
+    const matrix = matrixValidation(currentRowArray);
+    changeColours(matrix[0], row);
   }
 
   function updateCurrentGame(copiedObject) {
