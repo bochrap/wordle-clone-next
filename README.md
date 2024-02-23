@@ -23,5 +23,4 @@ https://wordle-test-branch.vercel.app --- test version
 ## Watch out for meow duck in the code
            _   
        .__(.)< (MEOW)
-        \___/
-~~~~~~~~~~~~~~~~~~
+        \___)
