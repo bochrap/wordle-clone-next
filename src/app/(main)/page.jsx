@@ -1,7 +1,12 @@
 /* ----- Third Party Imports ----- */ 
 import Link from "next/link";
+import { ClerkProvider, UserButton, auth, currentUser, clerkClient, getAuth } from "@clerk/nextjs";
 
-export default function Home() {
+export default async function Home() {
+
+  const { userId } = auth();
+  const user = await currentUser();
+
   return (
     <div className="container">
       <header className="header">
@@ -14,7 +19,8 @@ export default function Home() {
           Unleash the power of your vocabulary and explore words waiting to be discovered.
         </p>
 
-        <Link className="playButton" href="/play">Start Your Adventure</Link>
+        {userId && <Link className="playButton" href="/play">Start Your Adventure</Link>}
+        {!userId && <Link className="playButton" href="/sign-in">Start Your Adventure</Link>}
 
       </main>
 

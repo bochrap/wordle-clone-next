@@ -15,10 +15,10 @@ Eduardo
 Filip  
 Paulus  
 
-### Main Version
+## Main Version
 https://wordle-legends.vercel.app
 
-### Test Version
+## Test Version
 https://wordle-test-branch.vercel.app 
 
 ## Watch out for Meow Duck 
