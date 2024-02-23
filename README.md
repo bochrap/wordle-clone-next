@@ -15,10 +15,11 @@ Eduardo
 Filip  
 Paulus  
 
-## Live versions
+### Main Version
+https://wordle-legends.vercel.app
 
-https://wordle-legends.vercel.app --- main version
-https://wordle-test-branch.vercel.app --- test version
+### Test Version
+https://wordle-test-branch.vercel.app 
 
 ## Watch out for meow duck in the code
            _   
