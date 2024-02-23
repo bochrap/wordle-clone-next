@@ -1,0 +1,166 @@
+/* home page */
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff6ed;
+}
+
+nav {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+nav a {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 1.2em;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+nav a:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+nav a:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #333;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease-in-out;
+}
+
+nav a:hover:after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.container a:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.header {
+  background-color: #8311e7;
+  padding: 5rem;
+  color: #fff;
+  margin-bottom: 9rem;
+  margin-top: -12rem;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.header p {
+  margin: 0;
+  margin-top: 1rem;
+}
+
+.header:hover {
+  background-color: #6e1bd6;
+}
+
+.main {
+  text-align: center;
+  margin-top: -5rem;
+}
+
+.playButton {
+  display: inline-block;
+  padding: 1.5rem 3rem;
+  font-size: 1.5rem;
+  background-color: #2ecc71;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  margin-top: 2rem;
+}
+
+.playButton:hover {
+  background-color: #27ae60;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 3rem 0;
+  margin-bottom: -10rem;
+}
+
+.feature {
+  flex: 1 1;
+  padding: 1.5rem;
+  border: 1px solid #ecf0f1;
+  border-radius: 8px;
+}
+
+.feature:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.footer {
+  padding: 1rem;
+  background-color: #ecf0f1;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.footer:hover {
+  background-color: #d2d7db;
+}
+
+/* Styles for tablet devices */
+@media only screen and (max-width: 768px) {
+  nav {
+    margin-bottom: 0;
+  }
+
+  .container {
+    padding: 0 20px;
+  }
+
+  .header {
+    margin-top: 3rem;
+  }
+
+  .features {
+    margin-bottom: 0;
+  }
+
+  .feature {
+    flex-basis: 100%;
+  }
+}
+
+/* Styles for mobile devices */
+@media only screen and (max-width: 480px) {
+
+  .playButton {
+    margin-top: 1rem;
+  }
+}

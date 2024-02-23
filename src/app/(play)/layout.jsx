@@ -1,5 +1,5 @@
 /* ----- Third Party Imports ----- */
-import { ClerkProvider, UserButton, auth, currentUser, clerkClient, getAuth } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import Link from "next/link";
 import GameContextProvider from "@/context/game-context";
 
@@ -14,16 +14,20 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
 
+
   return (
     <ClerkProvider>
     <html lang="en">
       <GameContextProvider>
         <body>
          <LoginManager/>
+         <nav>
+            <Link href="/">Home</Link>
+          </nav>
           {children}
-          <footer className="footer">
+        <footer className="footer">
         <p>© 2024 Wordly Game. All rights reserved.</p>
-      </footer>
+        </footer>
         </body>
       </GameContextProvider>
     </html>
