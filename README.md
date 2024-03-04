@@ -1,27 +1,40 @@
 # Wordle with Next JS
 
 Final Project for Tech Educators intensive software development bootcamp.
+The base game was initially created as a group project and then forked to individual GitHub accounts.
 
-## User Stories 
+# About
+
+This is a Wordle game clone created in Next.js. It is heavily relying on useContext and useState functionalities passed between the components
+
+# Live version
+
+https://wordle-legends.vercel.app
+
+# Installation
+
+To run the game locally you need couple of things:
+
+## User Stories
 
 🐿️ As a user I want to be able to login  
 🐿️ As a user I want to be able to play multiple wordle games  
-🐿️ As a user I want to be able to come back to my game later and my progress isn't lost if I reload the page  
+🐿️ As a user I want to be able to come back to my game later and my progress isn't lost if I reload the page
 
 ## The Wordle Team Legends
 
 Alberto  
 Eduardo  
 Filip  
-Paulus  
+Paulus
 
-## Main Version
-https://wordle-legends.vercel.app
+## Thinigs to be done:
 
-## Test Version
-https://wordle-test-branch.vercel.app 
+[] Fix CSS styling for different screen sizes and make the colours consistent
+[] Implement keyboard input
+[] Fix the bug where letters occuring more than once are validated correctly
+[] Add timer and scoring
+[] Add different game modes
+[] Create as a new project with separate database and deploy on Vercel
 
-## Watch out for Meow Duck 
-           _   
-       .__(.)< (MEOW)
-        \___)
+## Known issues:
