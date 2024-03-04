@@ -9,7 +9,7 @@ This is a Wordle game clone created in Next.js. It is heavily relying on useCont
 
 # Live version
 
-https://wordle-legends.vercel.app
+https://wordle-clone-next-test.vercel.app/
 
 # Installation
 
@@ -37,4 +37,7 @@ Paulus
 [] Add different game modes
 [] Create as a new project with separate database and deploy on Vercel
 
-## Known issues:
+## Credits
+
+- https://react-hot-toast.com/ for toast notifications
+- https://gist.github.com/scholtes/94f3c0303ba6a7768b47583aff36654d for words database
